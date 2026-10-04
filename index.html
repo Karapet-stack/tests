@@ -6,31 +6,103 @@
 <title>Головне меню — тестування</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f1f5f9;color:#172033;min-height:100vh}
-.wrap{width:min(100% - 30px,900px);margin:0 auto;padding:40px 0}
-h1{text-align:center;margin:0 0 8px;font-size:32px}
-.sub{text-align:center;color:#64748b;margin-bottom:30px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
-a.tile{display:block;background:#fff;border-radius:18px;padding:26px 20px;text-align:center;text-decoration:none;color:inherit;box-shadow:0 8px 25px rgba(0,0,0,.08);transition:.15s;border:2px solid transparent}
-a.tile:hover{transform:translateY(-3px);border-color:#2563eb}
-.ic{font-size:48px;margin-bottom:10px}
-.tt{font-size:19px;font-weight:bold;margin-bottom:6px}
-.ds{font-size:14px;color:#64748b;line-height:1.4}
-.teacher{margin-top:30px;text-align:center}
-.teacher a{display:inline-block;background:#173b63;color:#fff;text-decoration:none;border-radius:12px;padding:13px 22px;font-weight:bold}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eef2f7;color:#1e293b}
+.container{max-width:950px;margin:auto;padding:20px}
+header{background:#fff;border-radius:14px;padding:25px;margin-bottom:20px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+header h1{margin:0 0 10px;font-size:28px}
+header p{margin:0;color:#64748b;line-height:1.5}
+.subject{background:#fff;border-radius:14px;padding:25px;margin-bottom:20px;box-shadow:0 3px 12px rgba(0,0,0,.08);border-left:6px solid #2563eb}
+.subject-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.subject-icon{font-size:38px;line-height:1}
+.subject h2{margin:0;font-size:22px}
+.tag{display:inline-block;margin-top:4px;font-size:13px;color:#64748b}
+.desc{margin:12px 0 4px;line-height:1.55;color:#475569}
+.info{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.info-item{background:#f1f5f9;padding:10px 15px;border-radius:8px;font-size:15px}
+.start{display:inline-block;background:#2563eb;color:#fff;text-decoration:none;border-radius:8px;padding:13px 26px;font-size:16px;font-weight:bold}
+.start:hover{background:#1d4ed8}
+.note{background:#fff7ed;color:#9a3412;border-radius:10px;padding:14px 16px;margin-bottom:20px;line-height:1.5;font-size:14px}
+.teacher{text-align:center;margin:10px 0 30px}
+.teacher a{display:inline-block;background:#173b63;color:#fff;text-decoration:none;border-radius:8px;padding:12px 22px;font-weight:bold}
 .teacher a:hover{background:#0f2a47}
+@media(max-width:650px){.container{padding:10px}.subject{padding:18px}header h1{font-size:22px}.info-item{width:100%}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Тестування</h1>
-  <div class="sub">Оберіть тест. Для початку знадобляться код здобувача, ПІБ та група.</div>
-  <div class="grid">
-    <a class="tile" href="test-kcis.html"><div class="ic">💻</div><div class="tt">Засоби комп’ютерних інформаційних систем</div><div class="ds">Підсумковий тест</div></a>
-    <a class="tile" href="test-merezhi.html"><div class="ic">🌐</div><div class="tt">Комп’ютерні мережі</div><div class="ds">Перевірка знань з теми комп’ютерних мереж</div></a>
-    <a class="tile" href="test-kreslennia.html"><div class="ic">📐</div><div class="tt">Креслення</div><div class="ds">Питання з ілюстраціями</div></a>
-  </div>
-  <div class="teacher"><a href="panel-vykladacha.html">👩‍🏫 Панель викладача</a></div>
+<div class="container">
+
+<header>
+  <h1>Тестування здобувачів освіти</h1>
+  <p>Оберіть предмет, щоб розпочати тест. Для входу потрібні код здобувача, ПІБ та група.</p>
+</header>
+
+<div class="note">
+  <b>Увага!</b> Спроба використовується одразу після натискання «Розпочати тест». Під час тесту не можна виходити з повноекранного режиму та переходити на інші вкладки: після 3 виходів тест завершується автоматично.
 </div>
+
+<div id="list"></div>
+
+<div class="teacher"><a href="panel-vykladacha.html">👩‍🏫 Панель викладача</a></div>
+
+</div>
+
+<script>
+/* Дані про предмети — редагуйте тут */
+const SUBJECTS = [
+  {
+    icon: "💻",
+    title: "Засоби комп’ютерних інформаційних систем",
+    tag: "Підсумковий тест",
+    desc: "Будова ПК (процесор, пам’ять, накопичувачі, живлення, охолодження), діагностика несправностей, операційні системи, основи мереж, захист даних і резервне копіювання.",
+    questions: 60, minutes: 40, attempts: 3, grade: 12,
+    url: "test-kcis.html"
+  },
+  {
+    icon: "🌐",
+    title: "Комп’ютерні мережі",
+    tag: "Тематичний тест",
+    desc: "Типи мереж, IP- та MAC-адреси, протоколи, порти, топології, мережеве обладнання, Wi-Fi, DNS, DHCP, VPN та базові мережеві команди.",
+    questions: 50, minutes: 30, attempts: 3, grade: 12,
+    url: "test-merezhi.html"
+  },
+  {
+    icon: "📐",
+    title: "Креслення",
+    tag: "Тематичний тест з ілюстраціями",
+    desc: "Формати та масштаби, типи ліній, розміри, проєкційні види, розрізи та перерізи, основний напис. Частина питань містить креслення.",
+    questions: 32, minutes: 30, attempts: 3, grade: 12,
+    url: "test-kreslennia.html"
+  }
+];
+
+const list = document.getElementById("list");
+SUBJECTS.forEach(s => {
+  const el = document.createElement("section");
+  el.className = "subject";
+
+  const head = document.createElement("div"); head.className = "subject-head";
+  const ic = document.createElement("div"); ic.className = "subject-icon"; ic.textContent = s.icon;
+  const box = document.createElement("div");
+  const h2 = document.createElement("h2"); h2.textContent = s.title;
+  const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = s.tag;
+  box.append(h2, tag); head.append(ic, box);
+
+  const d = document.createElement("p"); d.className = "desc"; d.textContent = s.desc;
+
+  const info = document.createElement("div"); info.className = "info";
+  [["Питань", s.questions], ["Час", s.minutes + " хв"], ["Спроб", s.attempts], ["Максимальна оцінка", s.grade]]
+    .forEach(([k, v]) => {
+      const i = document.createElement("div"); i.className = "info-item";
+      i.append(k + ": ");
+      const b = document.createElement("b"); b.textContent = v; i.append(b);
+      info.append(i);
+    });
+
+  const a = document.createElement("a"); a.className = "start"; a.href = s.url; a.textContent = "Розпочати тест →";
+
+  el.append(head, d, info, a);
+  list.append(el);
+});
+</script>
 </body>
 </html>
