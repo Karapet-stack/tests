@@ -3,105 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Головне меню — тестування</title>
+<title>Тестування</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eef2f7;color:#1e293b}
-.container{max-width:950px;margin:auto;padding:20px}
-header{background:#fff;border-radius:14px;padding:25px;margin-bottom:20px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.08)}
-header h1{margin:0 0 10px;font-size:28px}
-header p{margin:0;color:#64748b;line-height:1.5}
-.subject{background:#fff;border-radius:14px;padding:25px;margin-bottom:20px;box-shadow:0 3px 12px rgba(0,0,0,.08);border-left:6px solid #2563eb}
-.subject-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-.subject-icon{font-size:38px;line-height:1}
-.subject h2{margin:0;font-size:22px}
-.tag{display:inline-block;margin-top:4px;font-size:13px;color:#64748b}
-.desc{margin:12px 0 4px;line-height:1.55;color:#475569}
-.info{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
-.info-item{background:#f1f5f9;padding:10px 15px;border-radius:8px;font-size:15px}
-.start{display:inline-block;background:#2563eb;color:#fff;text-decoration:none;border-radius:8px;padding:13px 26px;font-size:16px;font-weight:bold}
-.start:hover{background:#1d4ed8}
-.note{background:#fff7ed;color:#9a3412;border-radius:10px;padding:14px 16px;margin-bottom:20px;line-height:1.5;font-size:14px}
-.teacher{text-align:center;margin:10px 0 30px}
-.teacher a{display:inline-block;background:#173b63;color:#fff;text-decoration:none;border-radius:8px;padding:12px 22px;font-weight:bold}
-.teacher a:hover{background:#0f2a47}
-@media(max-width:650px){.container{padding:10px}.subject{padding:18px}header h1{font-size:22px}.info-item{width:100%}}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f6f7f9;color:#1f2937}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 20px}
+header{text-align:center;margin-bottom:34px}
+header h1{margin:0 0 8px;font-size:26px;font-weight:700}
+header p{margin:0;color:#6b7280;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{display:flex;flex-direction:column;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:20px 16px;text-align:center;text-decoration:none;color:inherit;transition:.15s}
+.card.ready:hover{border-color:#2563eb;box-shadow:0 6px 18px rgba(37,99,235,.10);transform:translateY(-2px)}
+.icon{width:64px;height:64px;margin:0 auto 14px;border-radius:14px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:30px;overflow:hidden}
+.icon.empty{background:transparent;border:2px dashed #d1d5db}
+.icon img{width:100%;height:100%;object-fit:cover}
+.title{font-size:16px;font-weight:700;line-height:1.3;margin-bottom:6px;min-height:42px;display:flex;align-items:center;justify-content:center}
+.desc{font-size:13px;color:#6b7280;line-height:1.4;margin-bottom:12px;min-height:36px}
+.meta{margin-top:auto;font-size:13px;color:#4b5563;padding-top:12px;border-top:1px solid #f0f1f3}
+.btn{margin-top:12px;background:#2563eb;color:#fff;border-radius:8px;padding:10px;font-size:14px;font-weight:700}
+.card.soon{background:#fafafa;cursor:default}
+.card.soon .title{color:#9ca3af}
+.soon-label{margin-top:auto;font-size:13px;color:#9ca3af;padding-top:12px;border-top:1px solid #f0f1f3}
+.missing{margin-top:8px;font-size:12px;color:#b91c1c}
+footer{text-align:center;margin-top:34px}
+footer a{color:#6b7280;font-size:14px;text-decoration:none;border-bottom:1px solid #d1d5db}
+footer a:hover{color:#111827}
+@media(max-width:950px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="container">
-
-<header>
-  <h1>Тестування здобувачів освіти</h1>
-  <p>Оберіть предмет, щоб розпочати тест. Для входу потрібні код здобувача, ПІБ та група.</p>
-</header>
-
-<div class="note">
-  <b>Увага!</b> Спроба використовується одразу після натискання «Розпочати тест». Під час тесту не можна виходити з повноекранного режиму та переходити на інші вкладки: після 3 виходів тест завершується автоматично.
-</div>
-
-<div id="list"></div>
-
-<div class="teacher"><a href="panel-vykladacha.html">👩‍🏫 Панель викладача</a></div>
-
+<div class="wrap">
+  <header>
+    <h1>Тестування</h1>
+    <p>Оберіть предмет. Потрібні код здобувача, ПІБ та група.</p>
+  </header>
+  <div class="grid" id="grid"></div>
+  <footer><a href="teacher.html">Панель викладача</a></footer>
 </div>
 
 <script>
-/* Дані про предмети — редагуйте тут */
+/* ============================================================
+   СПИСОК ПРЕДМЕТІВ — редагуйте тут
+   ready:true  — тест готовий (потрібні url, questions, minutes, attempts)
+   ready:false — на картці буде «Тест готується»
+   icon: ""            — порожня іконка-рамка (заповните пізніше)
+         "📐"          — емодзі
+         "img/web.png" — картинка (шлях до файлу)
+   url — ТОЧНА назва файлу тесту поруч із цією сторінкою
+============================================================ */
 const SUBJECTS = [
-  {
-    icon: "💻",
-    title: "Засоби комп’ютерних інформаційних систем",
-    tag: "Підсумковий тест",
-    desc: "Будова ПК (процесор, пам’ять, накопичувачі, живлення, охолодження), діагностика несправностей, операційні системи, основи мереж, захист даних і резервне копіювання.",
-    questions: 60, minutes: 40, attempts: 3, grade: 12,
-    url: "test-kcis.html"
-  },
-  {
-    icon: "🌐",
-    title: "Комп’ютерні мережі",
-    tag: "Тематичний тест",
-    desc: "Типи мереж, IP- та MAC-адреси, протоколи, порти, топології, мережеве обладнання, Wi-Fi, DNS, DHCP, VPN та базові мережеві команди.",
-    questions: 50, minutes: 30, attempts: 3, grade: 12,
-    url: "test-merezhi.html"
-  },
-  {
-    icon: "📐",
-    title: "Креслення",
-    tag: "Тематичний тест з ілюстраціями",
-    desc: "Формати та масштаби, типи ліній, розміри, проєкційні види, розрізи та перерізи, основний напис. Частина питань містить креслення.",
-    questions: 32, minutes: 30, attempts: 3, grade: 12,
-    url: "test-kreslennia.html"
-  }
+  { ready:true,  icon:"💻", title:"Засоби комп’ютерних інформаційних систем", desc:"Будова ПК, діагностика, ОС, мережі, захист даних", questions:60, minutes:40, attempts:3, url:"kcis.html" },
+  { ready:true,  icon:"🌐", title:"Комп’ютерні мережі", desc:"Протоколи, адреси, обладнання, Wi-Fi, DNS", questions:50, minutes:30, attempts:3, url:"km.html" },
+  { ready:true,  icon:"📐", title:"Креслення", desc:"Лінії, розміри, види, розрізи, масштаби", questions:32, minutes:30, attempts:3, url:"kreslennia.html" },
+  { ready:false, icon:"", title:"Веб-дизайн" },
+  { ready:false, icon:"", title:"Інженерна графіка" },
+  { ready:false, icon:"", title:"САПР" },
+  { ready:false, icon:"", title:"Комп’ютерна графіка" },
+  { ready:false, icon:"", title:"Бази даних" },
+  { ready:false, icon:"", title:"Інформаційні технології" },
+  { ready:false, icon:"", title:"Комп’ютерні системи" },
+  { ready:false, icon:"", title:"Вебтехнології" }
 ];
 
-const list = document.getElementById("list");
+function makeIcon(icon){
+  const d = document.createElement("div");
+  d.className = "icon";
+  if(!icon){ d.classList.add("empty"); return d; }
+  if(/[\/.]/.test(icon)){
+    const img = document.createElement("img"); img.src = icon; img.alt = "";
+    img.onerror = () => { d.textContent = ""; d.classList.add("empty"); img.remove(); };
+    d.appendChild(img);
+  }else d.textContent = icon;
+  return d;
+}
+function div(cls, text){ const e = document.createElement("div"); e.className = cls; if(text) e.textContent = text; return e; }
+
+const grid = document.getElementById("grid");
 SUBJECTS.forEach(s => {
-  const el = document.createElement("section");
-  el.className = "subject";
+  if(s.ready){
+    const a = document.createElement("a");
+    a.className = "card ready"; a.href = s.url;
+    a.append(makeIcon(s.icon), div("title", s.title), div("desc", s.desc || ""),
+             div("meta", s.questions + " питань · " + s.minutes + " хв · " + s.attempts + " спроби"),
+             div("btn", "Розпочати"));
+    grid.appendChild(a);
 
-  const head = document.createElement("div"); head.className = "subject-head";
-  const ic = document.createElement("div"); ic.className = "subject-icon"; ic.textContent = s.icon;
-  const box = document.createElement("div");
-  const h2 = document.createElement("h2"); h2.textContent = s.title;
-  const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = s.tag;
-  box.append(h2, tag); head.append(ic, box);
-
-  const d = document.createElement("p"); d.className = "desc"; d.textContent = s.desc;
-
-  const info = document.createElement("div"); info.className = "info";
-  [["Питань", s.questions], ["Час", s.minutes + " хв"], ["Спроб", s.attempts], ["Максимальна оцінка", s.grade]]
-    .forEach(([k, v]) => {
-      const i = document.createElement("div"); i.className = "info-item";
-      i.append(k + ": ");
-      const b = document.createElement("b"); b.textContent = v; i.append(b);
-      info.append(i);
-    });
-
-  const a = document.createElement("a"); a.className = "start"; a.href = s.url; a.textContent = "Розпочати тест →";
-
-  el.append(head, d, info, a);
-  list.append(el);
+    // перевірка, чи існує файл тесту (працює на хостингу; локально з file:// мовчки пропускається)
+    if(location.protocol.startsWith("http")){
+      fetch(s.url, { method: "HEAD", cache: "no-store" }).then(r => {
+        if(!r.ok){ a.append(div("missing", "Файл не знайдено: " + s.url)); }
+      }).catch(() => {});
+    }
+  }else{
+    const c = document.createElement("div");
+    c.className = "card soon";
+    c.append(makeIcon(s.icon), div("title", s.title), div("desc", ""), div("soon-label", "Тест готується"));
+    grid.appendChild(c);
+  }
 });
 </script>
 </body>
