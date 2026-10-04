@@ -1106,7 +1106,7 @@ async function startTest(){
     const ip = await getIP();
     const body = { p_test_id: CONFIG.testId, p_student_code: code, p_student_name: name, p_browser_id: browserId, p_device_id: deviceId, p_ip_address: ip };
     let d;
-    try{ d = await rpc("start_test_attempt", Object.assign({ p_max_score: TOTAL }, body)); }
+    try{ d = await rpc("start_test_attempt", Object.assign({ p_student_group: group, p_max_score: TOTAL }, body)); }
     catch(e){
       // якщо функція на сервері не має параметра p_max_score — пробуємо без нього
       if(/find the function|PGRST202/i.test(e.message)) d = await rpc("start_test_attempt", body); else throw e;
@@ -1275,7 +1275,9 @@ async function finish(reason){
 async function sendResult(){
   const s = $("rSave"); s.textContent = "Результат зберігається..."; s.style.color = ""; $("retrySaveBtn").classList.add("hidden");
   try{
-    await rpc("finish_test_attempt", { p_test_id: CONFIG.testId, p_attempt_id: Number(state.attemptId), p_score: state.result.correct });
+    const fb = { p_test_id: CONFIG.testId, p_attempt_id: Number(state.attemptId), p_score: state.result.correct };
+    try{ await rpc("finish_test_attempt", Object.assign({ p_max_score: state.questions.length }, fb)); }
+    catch(e){ if(/find the function|PGRST202/i.test(e.message)) await rpc("finish_test_attempt", fb); else throw e; }
     state.saved = true; save();
     s.textContent = "✅ Результат успішно збережено."; s.style.color = "#15803d";
   }catch(e){
