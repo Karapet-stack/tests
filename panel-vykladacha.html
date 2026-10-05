@@ -31,6 +31,11 @@ button:hover{opacity:.92}button:disabled{opacity:.5;cursor:not-allowed}
 table{width:100%;border-collapse:collapse;min-width:900px}
 th,td{border-bottom:1px solid #e2e8f0;padding:10px;text-align:left;vertical-align:middle}
 th{background:#f8fafc;font-size:14px}
+th.sortable{cursor:pointer;user-select:none;white-space:nowrap}
+th.sortable:hover{background:#eef2f7}
+th.sorted{color:#173b63;background:#e8eff7}
+th .arrow{display:inline-block;width:14px;margin-left:4px;color:#94a3b8;font-size:12px}
+th.sorted .arrow{color:#173b63}
 tr:hover td{background:#f8fafc}
 .badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:12px;font-weight:700}
 .badge-completed{background:#dcfce7;color:#166534}
@@ -157,6 +162,50 @@ function calcGrade(row){
   return m ? gradeFromPercent(Number(row.score) / m) : null;
 }
 
+/* ---------- Сортування ---------- */
+const COLUMNS = [
+  { key: "num",            title: "№",          sortable: false },
+  { key: "student_code",   title: "Код",        type: "text" },
+  { key: "student_name",   title: "ПІБ",        type: "text" },
+  { key: "student_group",  title: "Група",      type: "text" },
+  { key: "attempt_number", title: "Спроба",     type: "num" },
+  { key: "status",         title: "Статус",     type: "text" },
+  { key: "score",          title: "Бал",        type: "num" },
+  { key: "grade",          title: "Оцінка",     type: "num" },
+  { key: "started_at",     title: "Початок",    type: "date" },
+  { key: "finished_at",    title: "Завершення", type: "date" }
+];
+const collator = new Intl.Collator("uk", { numeric: true, sensitivity: "base" });
+let sortState = { key: "started_at", dir: "desc" };
+
+function sortValue(row, col){
+  let v;
+  if(col.key === "grade") v = calcGrade(row);
+  else if(col.key === "score") v = hasScore(row) ? row.score : null;
+  else v = row[col.key];
+  if(v === null || v === undefined || v === "") return null;
+  if(col.type === "num") { const n = Number(v); return Number.isNaN(n) ? null : n; }
+  if(col.type === "date"){ const t = new Date(v).getTime(); return Number.isNaN(t) ? null : t; }
+  return String(v);
+}
+function getSortedResults(){
+  const col = COLUMNS.find(c => c.key === sortState.key) || COLUMNS.find(c => c.key === "started_at");
+  const dir = sortState.dir === "asc" ? 1 : -1;
+  return [...getFilteredResults()].sort((a, b) => {
+    const x = sortValue(a, col), y = sortValue(b, col);
+    if(x === null && y === null) return 0;
+    if(x === null) return 1;      // порожні значення завжди внизу
+    if(y === null) return -1;
+    const r = col.type === "text" ? collator.compare(x, y) : (x - y);
+    return r * dir;
+  });
+}
+function setSort(key){
+  if(sortState.key === key) sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
+  else sortState = { key, dir: (key === "started_at" || key === "finished_at" || key === "score" || key === "grade") ? "desc" : "asc" };
+  renderResults();
+}
+
 /* ---------- Заповнення списку тестів ---------- */
 Object.keys(TEST_NAMES).forEach(id => {
   const o = document.createElement("option");
@@ -244,14 +293,21 @@ function getFilteredResults(){
 }
 
 function renderResults(){
-  const rows = getFilteredResults();
+  const rows = getSortedResults();
   updateStats(rows);
   if(!rows.length){ $("tableContainer").innerHTML = '<div class="empty">Результатів не знайдено.</div>'; return; }
 
-  const sorted = [...rows].sort((a, b) => new Date(b.started_at || 0) - new Date(a.started_at || 0));
-  let html = '<table><thead><tr><th>№</th><th>Код</th><th>ПІБ</th><th>Група</th><th>Спроба</th><th>Статус</th><th>Бал</th><th>Оцінка</th><th>Початок</th><th>Завершення</th></tr></thead><tbody>';
+  let html = "<table><thead><tr>";
+  COLUMNS.forEach(c => {
+    if(c.sortable === false){ html += "<th>" + c.title + "</th>"; return; }
+    const on = sortState.key === c.key;
+    const arrow = on ? (sortState.dir === "asc" ? "▲" : "▼") : "↕";
+    html += '<th class="sortable' + (on ? " sorted" : "") + '" data-key="' + c.key + '" title="Сортувати">' +
+            c.title + '<span class="arrow">' + arrow + "</span></th>";
+  });
+  html += "</tr></thead><tbody>";
 
-  sorted.forEach((row, i) => {
+  rows.forEach((row, i) => {
     const status = String(row.status || "");
     let st = escapeHtml(status);
     if(status === "completed") st = '<span class="badge badge-completed">Завершено</span>';
@@ -298,11 +354,11 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[ch]));
 }
 
-/* ---------- CSV ---------- */
+/* ---------- CSV (у тому ж порядку, що й у таблиці) ---------- */
 function csvCell(v){ return '"' + String(v ?? "").replace(/"/g, '""') + '"'; }
 
 function exportCSV(){
-  const rows = getFilteredResults();
+  const rows = getSortedResults();
   if(!rows.length){ alert("Немає результатів для експорту."); return; }
   const lines = [["Тест","Код","ПІБ","Група","Спроба","Статус","Бал","Максимум","Оцінка","Початок","Завершення"].map(csvCell).join(";")];
   rows.forEach(r => {
@@ -370,6 +426,10 @@ $("refreshBtn").addEventListener("click", loadResults);
 $("exportBtn").addEventListener("click", exportCSV);
 $("clearTestBtn").addEventListener("click", clearSelectedTest);
 $("clearAllBtn").addEventListener("click", clearAllTests);
+$("tableContainer").addEventListener("click", e => {
+  const th = e.target.closest("th.sortable");
+  if(th) setSort(th.dataset.key);
+});
 
 async function init(){
   try{
