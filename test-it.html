@@ -22,6 +22,7 @@ h1{text-align:center;margin:0 0 12px;font-size:30px}
 .form-group label{display:block;font-weight:bold;margin-bottom:7px}
 .form-group input{width:100%;padding:14px 15px;border:2px solid #e2e8f0;border-radius:12px;font-size:16px;outline:none;user-select:text;-webkit-user-select:text}
 .form-group input:focus{border-color:#2563eb}
+.hint{margin-top:7px;font-size:13px;color:#64748b;line-height:1.4}
 .rules{background:#f8fafc;border-radius:15px;padding:18px 20px;margin:25px 0}
 .rules h3{margin-top:0}
 .rules ul{margin-bottom:0;padding-left:22px}
@@ -91,9 +92,9 @@ h1{font-size:24px}.q-card{padding:18px}.q-text{font-size:18px}
   <div class="logo" id="logo"></div>
   <h1 id="title"></h1>
   <div class="subtitle" id="subtitle"></div>
-  <div class="form-group"><label for="studentCode">Код здобувача освіти</label><input id="studentCode" type="text" autocomplete="off" placeholder="Введіть код" maxlength="50"></div>
-  <div class="form-group"><label for="studentName">ПІБ здобувача освіти</label><input id="studentName" type="text" autocomplete="off" placeholder="Введіть ПІБ" maxlength="100"></div>
-  <div class="form-group"><label for="studentGroup">Група</label><input id="studentGroup" type="text" autocomplete="off" placeholder="Введіть групу" maxlength="50"></div>
+  <div class="form-group"><label for="studentCode">Код здобувача освіти</label><input id="studentCode" type="text" autocomplete="off" placeholder="Наприклад: Т-21-05" maxlength="50"><div class="hint" id="codeHint"></div></div>
+  <div class="form-group"><label for="studentName">ПІБ здобувача освіти</label><input id="studentName" type="text" autocomplete="off" placeholder="Прізвище Ім’я По батькові" maxlength="100"><div class="hint">Вказуйте прізвище та ім’я повністю.</div></div>
+  <div class="form-group"><label for="studentGroup">Група</label><input id="studentGroup" type="text" autocomplete="off" placeholder="Наприклад: Т-21" maxlength="50"></div>
   <div class="rules"><h3>📋 Правила тесту</h3><ul id="rules"></ul></div>
   <button id="startBtn" class="btn">▶ Почати тест</button>
   <a id="menuLinkStart" class="btn gray" href="index.html" style="margin-top:12px">🏠 Головне меню</a>
@@ -693,6 +694,13 @@ const MAX = CONFIG.maxAttempts, LEAVES = CONFIG.maxLeaves, TIME = CONFIG.minutes
 const KEY = "test_state_" + CONFIG.testId;
 const LET = "ABCDEFGH";
 const $ = id => document.getElementById(id);
+// код і група: без пробілів, великі літери, єдине тире, латинські двійники -> кирилиця (T -> Т, E -> Е ...)
+const LOOK = { A:"А", B:"В", C:"С", E:"Е", H:"Н", I:"І", K:"К", M:"М", O:"О", P:"Р", T:"Т", X:"Х" };
+const normCode = v => String(v || "")
+  .replace(/\s+/g, "")
+  .replace(/[\u2010-\u2015\u2212]/g, "-")
+  .toUpperCase()
+  .replace(/[A-Z]/g, ch => LOOK[ch] || ch);
 
 /* ---------- питання ---------- */
 function norm(it){
@@ -794,7 +802,7 @@ function ask(text){
 /* ---------- інформація про спроби ---------- */
 let infoSeq = 0;
 async function updateInfo(){
-  const code = $("studentCode").value.trim();
+  const code = normCode($("studentCode").value);
   const seq = ++infoSeq;
   $("resetBox").classList.add("hidden");
   if(code.length < 2){ $("attemptInfo").textContent = ""; $("startBtn").disabled = false; return; }
@@ -821,7 +829,7 @@ async function updateInfo(){
 /* ---------- старт ---------- */
 async function startTest(){
   startErrHide();
-  const code = $("studentCode").value.trim(), name = $("studentName").value.trim(), group = $("studentGroup").value.trim();
+  const code = normCode($("studentCode").value), name = $("studentName").value.trim(), group = normCode($("studentGroup").value);
   if(code.length < 2){ startErr("Введіть код здобувача освіти."); $("studentCode").focus(); return; }
   if(name.length < 2){ startErr("Введіть ПІБ."); $("studentName").focus(); return; }
   if(!group){ startErr("Введіть групу."); $("studentGroup").focus(); return; }
@@ -1054,7 +1062,7 @@ $("homeBtn").addEventListener("click", () => {
 });
 
 $("resetBtn").addEventListener("click", async () => {
-  const code = $("studentCode").value.trim(), pin = $("resetPin").value.trim(), m = $("resetMsg");
+  const code = normCode($("studentCode").value), pin = $("resetPin").value.trim(), m = $("resetMsg");
   m.classList.remove("hidden");
   if(!pin){ m.className = "msg err"; m.textContent = "Введіть PIN викладача."; return; }
   $("resetBtn").disabled = true;
@@ -1075,6 +1083,7 @@ $("studentCode").addEventListener("blur", () => { if(!(state && state.active)) u
 function init(){
   document.title = CONFIG.title;
   $("logo").textContent = CONFIG.icon || "📝";
+  $("codeHint").textContent = CONFIG.codeHint || "Код = ваша група + ваш номер у списку. Наприклад: група Т-21, номер 5 → Т-21-05.";
   ["menuLinkStart","menuLinkResult"].forEach(id => $(id).href = CONFIG.menuUrl || "index.html");
   $("title").textContent = CONFIG.title;
   $("subtitle").textContent = CONFIG.subtitle || "";
