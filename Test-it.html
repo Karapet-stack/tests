@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тест</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#f1f5f9;color:#172033}
+body{-webkit-user-select:none;user-select:none}
+input,button{font-family:inherit}
+.hidden{display:none!important}
+.container{width:min(100% - 30px,1000px);margin:0 auto}
+.screen{min-height:100vh;padding:25px 0}
+.card{background:#fff;border-radius:22px;padding:35px;box-shadow:0 15px 45px rgba(0,0,0,.10)}
+.center{display:flex;justify-content:center;align-items:center}
+.start-card{width:100%;max-width:700px}
+.logo{text-align:center;font-size:55px;margin-bottom:10px}
+h1{text-align:center;margin:0 0 12px;font-size:30px}
+.subtitle{text-align:center;color:#64748b;margin-bottom:28px;line-height:1.5}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-weight:bold;margin-bottom:7px}
+.form-group input{width:100%;padding:14px 15px;border:2px solid #e2e8f0;border-radius:12px;font-size:16px;outline:none;user-select:text;-webkit-user-select:text}
+.form-group input:focus{border-color:#2563eb}
+.rules{background:#f8fafc;border-radius:15px;padding:18px 20px;margin:25px 0}
+.rules h3{margin-top:0}
+.rules ul{margin-bottom:0;padding-left:22px}
+.rules li{margin:8px 0;line-height:1.4}
+.btn{width:100%;border:none;border-radius:13px;padding:15px;font-size:17px;font-weight:bold;cursor:pointer;background:#2563eb;color:#fff}
+.btn:hover{background:#1d4ed8}
+.btn:disabled{background:#94a3b8;cursor:not-allowed}
+.btn.gray{background:#64748b}.btn.gray:hover{background:#475569}
+.btn.red{background:#ef4444}.btn.red:hover{background:#dc2626}
+.btn.green{background:#16a34a}
+a.btn{display:block;text-align:center;text-decoration:none}.btn.green:hover{background:#15803d}
+.attempt-info{text-align:center;margin-top:15px;color:#475569;font-weight:bold}
+.msg{border-radius:12px;padding:12px;margin-top:15px;text-align:center;line-height:1.4}
+.msg.err{color:#b91c1c;background:#fef2f2;border:1px solid #fecaca}
+.msg.ok{color:#166534;background:#ecfdf5;border:1px solid #a7f3d0}
+.msg.warn{color:#9a3412;background:#fff7ed;border:1px solid #fed7aa}
+.reset-box{margin-top:20px;padding:15px;border-radius:13px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;text-align:center}
+.reset-box input{width:100%;padding:12px;margin:10px 0;border:2px solid #fed7aa;border-radius:10px;font-size:16px;user-select:text;-webkit-user-select:text}
+.test-header{position:sticky;top:0;z-index:100;background:#fff;border-radius:16px;box-shadow:0 8px 25px rgba(0,0,0,.08);padding:14px 18px;margin-bottom:20px}
+.row{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}
+.timer{font-size:22px;font-weight:bold;color:#2563eb}
+.timer.warning{color:#f97316}.timer.danger{color:#dc2626}
+.progress-text{display:flex;justify-content:space-between;font-size:14px;color:#64748b;margin:12px 0 5px}
+.bar{height:9px;background:#e2e8f0;border-radius:20px;overflow:hidden}
+.fill{height:100%;background:#2563eb;width:0;transition:width .2s}
+.viol{margin-top:10px;font-size:14px;font-weight:bold;color:#b91c1c}
+.q-card{background:#fff;border-radius:18px;padding:25px;box-shadow:0 8px 25px rgba(0,0,0,.07)}
+.q-num{color:#2563eb;font-weight:bold;margin-bottom:10px}
+.q-text{font-size:20px;font-weight:bold;line-height:1.45;margin-bottom:18px}
+.q-hint{color:#64748b;font-size:14px;margin:-8px 0 14px}
+.q-img{display:block;max-width:100%;max-height:430px;object-fit:contain;margin:6px auto 18px;border:1px solid #dbe3ec;border-radius:10px;background:#fff;-webkit-user-drag:none}
+.img-err{padding:12px;border:1px solid #fecaca;background:#fef2f2;color:#991b1b;border-radius:10px;margin:6px 0 18px;text-align:center}
+.answers{display:flex;flex-direction:column;gap:12px}
+.ans{display:flex;align-items:flex-start;gap:12px;padding:15px;border:2px solid #e2e8f0;border-radius:13px;cursor:pointer;transition:.15s;background:#fff}
+.ans:hover{border-color:#93c5fd;background:#eff6ff}
+.ans.sel{border-color:#2563eb;background:#eff6ff}
+.ans input{margin-top:4px;transform:scale(1.2);flex-shrink:0}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:20px}
+.nav .btn{width:auto;flex:1;padding:13px 20px;font-size:16px}
+.grade{text-align:center;font-size:65px;font-weight:bold;margin:15px 0;color:#2563eb}
+.title2{text-align:center;font-size:30px;font-weight:bold}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:25px 0}
+.stat{background:#f8fafc;border-radius:14px;padding:15px;text-align:center}
+.stat b{display:block;font-size:25px}
+.stat span{display:block;margin-top:5px;color:#64748b;font-size:13px}
+.box{background:#f8fafc;border-radius:14px;padding:15px;margin-top:15px;line-height:1.5;text-align:center}
+.res-btns{display:grid;gap:12px;margin-top:20px}
+.overlay{position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.96);color:#fff;display:none;justify-content:center;align-items:center;padding:25px;text-align:center}
+.overlay .in{max-width:450px}
+.overlay .ic{font-size:60px;margin-bottom:15px}
+.overlay .tt{font-size:26px;font-weight:bold;margin-bottom:12px}
+.overlay .tx{color:#cbd5e1;line-height:1.5}
+.overlay .btn{margin-top:20px;width:auto;padding:14px 22px}
+@media(max-width:700px){
+.container{width:min(100% - 16px,1000px)}
+.card{padding:22px;border-radius:17px}
+h1{font-size:24px}.q-card{padding:18px}.q-text{font-size:18px}
+.stats{grid-template-columns:repeat(2,1fr)}
+.nav{flex-direction:column-reverse}.nav .btn{width:100%}
+.row{flex-direction:column;align-items:stretch}.timer{text-align:center}}
+</style>
+</head>
+<body>
+
+<!-- ============ СТАРТ ============ -->
+<section id="startScreen" class="screen center"><div class="container"><div class="card start-card" style="margin:auto">
+  <div class="logo" id="logo"></div>
+  <h1 id="title"></h1>
+  <div class="subtitle" id="subtitle"></div>
+  <div class="form-group"><label for="studentCode">Код здобувача освіти</label><input id="studentCode" type="text" autocomplete="off" placeholder="Введіть код" maxlength="50"></div>
+  <div class="form-group"><label for="studentName">ПІБ здобувача освіти</label><input id="studentName" type="text" autocomplete="off" placeholder="Введіть ПІБ" maxlength="100"></div>
+  <div class="form-group"><label for="studentGroup">Група</label><input id="studentGroup" type="text" autocomplete="off" placeholder="Введіть групу" maxlength="50"></div>
+  <div class="rules"><h3>📋 Правила тесту</h3><ul id="rules"></ul></div>
+  <button id="startBtn" class="btn">▶ Почати тест</button>
+  <a id="menuLinkStart" class="btn gray" href="index.html" style="margin-top:12px">🏠 Головне меню</a>
+  <div id="startError" class="msg err hidden"></div>
+  <div id="attemptInfo" class="attempt-info"></div>
+  <div id="resetBox" class="reset-box hidden">
+    <strong>Використано всі спроби.</strong><br>
+    Для додаткової спроби викладач вводить свій PIN-код.
+    <input id="resetPin" type="password" placeholder="PIN викладача" autocomplete="off">
+    <button id="resetBtn" class="btn red">🔄 Скинути спроби</button>
+    <div id="resetMsg" class="hidden" style="margin-top:10px"></div>
+  </div>
+</div></div></section>
+
+<!-- ============ ТЕСТ ============ -->
+<section id="testScreen" class="screen hidden"><div class="container">
+  <div class="test-header">
+    <div class="row"><b id="studentDisplay"></b><div id="timer" class="timer">00:00</div></div>
+    <div class="progress-text"><span id="progressText"></span><span id="answeredText"></span></div>
+    <div class="bar"><div id="progressFill" class="fill"></div></div>
+    <div id="violCounter" class="viol"></div>
+  </div>
+  <div class="q-card">
+    <div id="qNum" class="q-num"></div>
+    <div id="qText" class="q-text"></div>
+    <div id="qBody"></div>
+    <div class="nav">
+      <button id="prevBtn" class="btn gray">← Назад</button>
+      <button id="nextBtn" class="btn">Далі →</button>
+      <button id="finishBtn" class="btn green hidden">Завершити тест</button>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ РЕЗУЛЬТАТ ============ -->
+<section id="resultScreen" class="screen hidden"><div class="container"><div class="card">
+  <div class="title2">🏁 Результат тесту</div>
+  <div id="rGrade" class="grade">—</div>
+  <div class="stats">
+    <div class="stat"><b id="rCorrect">0</b><span>Правильних</span></div>
+    <div class="stat"><b id="rWrong">0</b><span>Неправильних</span></div>
+    <div class="stat"><b id="rPercent">0%</b><span>Результат</span></div>
+    <div class="stat"><b id="rAttempt">0</b><span>Спроба</span></div>
+  </div>
+  <div id="rReason" class="box"></div>
+  <div id="rSave" class="box"></div>
+  <div class="box">🔒 Правильні відповіді не показуються.</div>
+  <div class="res-btns">
+    <button id="retrySaveBtn" class="btn red hidden">💾 Спробувати зберегти ще раз</button>
+    <button id="nextAttemptBtn" class="btn hidden">▶ Наступна спроба</button>
+    <button id="homeBtn" class="btn gray">🏠 На головну</button>
+    <a id="menuLinkResult" class="btn gray" href="index.html">☰ Головне меню</a>
+  </div>
+</div></div></section>
+
+<!-- ============ ОВЕРЛЕЇ ============ -->
+<div id="secOverlay" class="overlay"><div class="in">
+  <div class="ic">⚠️</div><div class="tt">Тест призупинено</div>
+  <div class="tx" id="secText"></div>
+  <button id="secBtn" class="btn">Повернутися до тесту</button>
+</div></div>
+
+<div id="confirmBox" class="overlay"><div class="in">
+  <div class="tt" id="confirmText"></div>
+  <div style="display:flex;gap:12px;justify-content:center">
+    <button id="confirmNo" class="btn gray">Ні</button>
+    <button id="confirmOk" class="btn green">Так</button>
+  </div>
+</div></div>
+
+
+<!-- =====================================================================
+     НАЛАШТУВАННЯ ТЕСТУ — ЄДИНЕ МІСЦЕ, ЯКЕ ТРЕБА МІНЯТИ ДЛЯ КОЖНОГО ТЕСТУ
+===================================================================== -->
+<script>
+const CONFIG = {
+  "testId": "it_2026",
+  "title": "Тест: Інформаційні технології",
+  "subtitle": "Основи роботи з інформацією, програмами та Інтернетом",
+  "icon": "🖥️",
+  "questionCount": 20,
+  "minutes": 20,
+  "maxAttempts": 3,
+  "maxLeaves": 3
+};
+
+const Q = [
+ {
+  "q": "Які процеси належать до основних інформаційних?",
+  "a": [
+   "Збирання",
+   "Зберігання",
+   "Обробка та передавання",
+   "Охолодження"
+  ],
+  "c": [
+   0,
+   1,
+   2
+  ]
+ },
+ {
+  "q": "Яка найменша одиниця вимірювання інформації?",
+  "a": [
+   "Байт",
+   "Біт",
+   "Кілобайт",
+   "Піксель"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Скільки бітів у одному байті?",
+  "a": [
+   "4",
+   "16",
+   "8",
+   "10"
+  ],
+  "c": [
+   2
+  ]
+ },
+ {
+  "q": "Скільки байтів у 1 кілобайті (КБ)?",
+  "a": [
+   "100",
+   "1000",
+   "512",
+   "1024"
+  ],
+  "c": [
+   3
+  ]
+ },
+ {
+  "q": "Який обсяг даних найбільший?",
+  "a": [
+   "800 КБ",
+   "1 МБ",
+   "500 МБ",
+   "2 ГБ"
+  ],
+  "c": [
+   3
+  ]
+ },
+ {
+  "q": "Що таке кодування інформації?",
+  "a": [
+   "Стирання даних",
+   "Подання інформації у вигляді певної системи знаків або символів",
+   "Стиснення файлів",
+   "Друк документа"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Які цифри використовує двійкова система числення?",
+  "a": [
+   "1 і 2",
+   "0 і 1",
+   "0–9",
+   "0 і 2"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Які з наведених є операційними системами?",
+  "a": [
+   "Windows",
+   "Linux",
+   "Android",
+   "Excel"
+  ],
+  "c": [
+   0,
+   1,
+   2
+  ]
+ },
+ {
+  "q": "Яке розширення має документ Microsoft Word?",
+  "a": [
+   ".xlsx",
+   ".pptx",
+   ".jpg",
+   ".docx"
+  ],
+  "c": [
+   3
+  ]
+ },
+ {
+  "q": "Що таке папка (каталог)?",
+  "a": [
+   "Програма для друку",
+   "Контейнер для впорядкованого зберігання файлів і інших папок",
+   "Вид вірусу",
+   "Частина монітора"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Яке сполучення клавіш копіює виділений фрагмент?",
+  "a": [
+   "Ctrl + X",
+   "Ctrl + V",
+   "Ctrl + C",
+   "Ctrl + S"
+  ],
+  "c": [
+   2
+  ]
+ },
+ {
+  "q": "Яке сполучення клавіш вставляє скопійований фрагмент?",
+  "a": [
+   "Ctrl + V",
+   "Ctrl + C",
+   "Ctrl + A",
+   "Ctrl + P"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Яке сполучення клавіш скасовує останню дію?",
+  "a": [
+   "Ctrl + Y",
+   "Ctrl + Z",
+   "Ctrl + N",
+   "Ctrl + F"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Ви видалили файл у «Кошик» і ще не очищали його. Що можна зробити?",
+  "a": [
+   "Файл зник назавжди",
+   "Файл можна відновити з Кошика",
+   "Файл перейшов в оперативну пам’ять",
+   "Файл автоматично надіслано поштою"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Яка програма призначена для створення текстових документів?",
+  "a": [
+   "Microsoft Word",
+   "Paint",
+   "Excel",
+   "Провідник"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Які параметри належать до форматування тексту?",
+  "a": [
+   "Шрифт",
+   "Розмір",
+   "Вирівнювання",
+   "Роздільна здатність екрана"
+  ],
+  "c": [
+   0,
+   1,
+   2
+  ]
+ },
+ {
+  "q": "Що таке комірка електронної таблиці?",
+  "a": [
+   "Перетин рядка та стовпця",
+   "Назва файлу",
+   "Весь аркуш",
+   "Кнопка на панелі"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "З якого символу починається формула в Excel?",
+  "a": [
+   "#",
+   "=",
+   "@",
+   "$"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Яка формула знайде суму значень комірок від A1 до A5?",
+  "a": [
+   "=A1+A5",
+   "СУМ(A1:A5)=",
+   "=СУМ(A1:A5)",
+   "=ДОДАТИ(A1:A5)"
+  ],
+  "c": [
+   2
+  ]
+ },
+ {
+  "q": "Для чого в електронній таблиці використовують діаграму?",
+  "a": [
+   "Для наочного подання даних",
+   "Для захисту файла паролем",
+   "Для друку без полів",
+   "Для архівування таблиці"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що таке слайд?",
+  "a": [
+   "Окремий аркуш презентації",
+   "Тип шрифту",
+   "Формат аудіо",
+   "Вид вірусу"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Які поради допомагають зробити презентацію зручною для сприйняття?",
+  "a": [
+   "Небагато тексту на слайді",
+   "Читабельний розмір шрифту",
+   "Доречні зображення та діаграми",
+   "Великі суцільні абзаци тексту"
+  ],
+  "c": [
+   0,
+   1,
+   2
+  ]
+ },
+ {
+  "q": "Які програми є браузерами?",
+  "a": [
+   "Google Chrome",
+   "Mozilla Firefox",
+   "Microsoft Edge",
+   "Microsoft Excel"
+  ],
+  "c": [
+   0,
+   1,
+   2
+  ]
+ },
+ {
+  "q": "Що з наведеного є пошуковою системою?",
+  "a": [
+   "Paint",
+   "Windows",
+   "Google",
+   "Word"
+  ],
+  "c": [
+   2
+  ]
+ },
+ {
+  "q": "Як у пошуковій системі шукати точну фразу?",
+  "a": [
+   "Узяти її в лапки",
+   "Написати великими літерами",
+   "Додати кому в кінці",
+   "Вимкнути Інтернет"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Яка електронна адреса записана правильно?",
+  "a": [
+   "user.mail.com",
+   "user@@mail",
+   "user@mail.com",
+   "@user mail.com"
+  ],
+  "c": [
+   2
+  ]
+ },
+ {
+  "q": "Що таке вкладення в електронному листі?",
+  "a": [
+   "Тема листа",
+   "Файл, прикріплений до листа",
+   "Адреса отримувача",
+   "Підпис відправника"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Як найкраще перевірити, чи достовірна новина?",
+  "a": [
+   "Порівняти інформацію в кількох надійних джерелах",
+   "Повірити, якщо її поширює багато людей",
+   "Повірити, якщо заголовок гучний",
+   "Не перевіряти, якщо новина цікава"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що потрібно робити, використовуючи у своїй роботі чужі матеріали?",
+  "a": [
+   "Видавати їх за свої",
+   "Нічого, бо все в Інтернеті безкоштовне",
+   "Змінити назву файлу",
+   "Вказувати джерело та дотримуватися умов ліцензії"
+  ],
+  "c": [
+   3
+  ]
+ },
+ {
+  "q": "Що таке плагіат?",
+  "a": [
+   "Видача чужої роботи або ідей за свої",
+   "Резервне копіювання",
+   "Стиснення файлів",
+   "Тип програми для малювання"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Які ознаки має надійний пароль?",
+  "a": [
+   "Достатня довжина",
+   "Літери різного регістру",
+   "Цифри та спеціальні символи",
+   "Власне ім’я та дата народження"
+  ],
+  "c": [
+   0,
+   1,
+   2
+  ]
+ },
+ {
+  "q": "Для чого призначений антивірус?",
+  "a": [
+   "Для збільшення швидкості Інтернету",
+   "Для виявлення та видалення шкідливих програм",
+   "Для створення презентацій",
+   "Для підвищення яскравості екрана"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Ви отримали лист від невідомого відправника з вкладенням і вимогою його терміново відкрити. Що правильно зробити?",
+  "a": [
+   "Відкрити вкладення",
+   "Переслати друзям",
+   "Не відкривати вкладення, видалити лист або повідомити про підозрілий лист",
+   "Відповісти і надіслати свій пароль"
+  ],
+  "c": [
+   2
+  ]
+ },
+ {
+  "q": "Що таке хмарне сховище?",
+  "a": [
+   "Диск усередині ПК",
+   "Вид оперативної пам’яті",
+   "Папка на робочому столі",
+   "Сервіс зберігання файлів на віддалених серверах із доступом через Інтернет"
+  ],
+  "c": [
+   3
+  ]
+ },
+ {
+  "q": "Для чого створюють резервну копію даних?",
+  "a": [
+   "Щоб можна було відновити дані при втраті або поломці",
+   "Щоб прискорити процесор",
+   "Щоб збільшити оперативну пам’ять",
+   "Щоб видалити вірус"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що таке база даних?",
+  "a": [
+   "Окрема програма для друку",
+   "Упорядкована сукупність даних, що зберігається в комп’ютері",
+   "Тип кабелю",
+   "Вид монітора"
+  ],
+  "c": [
+   1
+  ]
+ },
+ {
+  "q": "Що таке алгоритм?",
+  "a": [
+   "Вид комп’ютерного вірусу",
+   "Назва операційної системи",
+   "Скінченна послідовність чітких кроків для розв’язання задачі",
+   "Тип файлу"
+  ],
+  "c": [
+   2
+  ]
+ },
+ {
+  "q": "Які властивості має алгоритм?",
+  "a": [
+   "Зрозумілість",
+   "Скінченність",
+   "Визначеність",
+   "Випадковість кроків"
+  ],
+  "c": [
+   0,
+   1,
+   2
+  ]
+ },
+ {
+  "q": "Який із форматів зображень є векторним?",
+  "a": [
+   "JPG",
+   "PNG",
+   "BMP",
+   "SVG"
+  ],
+  "c": [
+   3
+  ]
+ },
+ {
+  "q": "Який із форматів призначений для зберігання аудіо?",
+  "a": [
+   "MP3",
+   "JPG",
+   "DOCX",
+   "XLSX"
+  ],
+  "c": [
+   0
+  ]
+ }
+];
+</script>
+
+
+<!-- =====================================================================
+     ДВИГУН ТЕСТУ (однаковий для всіх тестів — не змінювати)
+===================================================================== -->
+<script>
+(function(){
+"use strict";
+
+const SUPABASE_URL = "https://egovkavyxtcztisropsf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_xteyS9yX00x-hZwLSdxgOg_D3ny6D-P";
+
+const MAX = CONFIG.maxAttempts, LEAVES = CONFIG.maxLeaves, TIME = CONFIG.minutes * 60;
+const KEY = "test_state_" + CONFIG.testId;
+const LET = "ABCDEFGH";
+const $ = id => document.getElementById(id);
+
+/* ---------- питання ---------- */
+function norm(it){
+  const c = (it.c || it.correct || []).map(x => typeof x === "string" ? LET.indexOf(x.toUpperCase()) : x);
+  return { q: it.q, a: it.a, c: c, img: it.img || null, multi: it.type === "multi" || c.length > 1 };
+}
+const BASE = Q.map(norm);
+const TOTAL = Math.min(CONFIG.questionCount || BASE.length, BASE.length);
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function buildQuestions(){
+  return shuffle(BASE).slice(0, TOTAL).map(q => {
+    // варіанти типу «Усі перелічені» не перемішуємо
+    const keep = q.a.some(t => /^(усі|усе|всі|все) перелічен/i.test(String(t).trim()));
+    const opts = q.a.map((t, i) => ({ t, ok: q.c.includes(i) }));
+    const o = keep ? opts : shuffle(opts);
+    return { q: q.q, img: q.img, multi: q.multi, a: o.map(x => x.t), c: o.map((x, i) => x.ok ? i : -1).filter(i => i >= 0) };
+  });
+}
+
+/* ---------- ідентифікатори браузера ---------- */
+function getId(k){
+  let id = localStorage.getItem(k);
+  if(!id){
+    id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+    localStorage.setItem(k, id);
+  }
+  return id;
+}
+const browserId = getId("test_browser_id"), deviceId = getId("test_device_id");
+
+/* ---------- Supabase ---------- */
+async function rpc(name, body){
+  const r = await fetch(SUPABASE_URL + "/rest/v1/rpc/" + name, {
+    method: "POST",
+    headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const text = await r.text();
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch(e) { data = { message: text }; }
+  if(!r.ok) throw new Error((data && data.message) || text || ("HTTP " + r.status));
+  return Array.isArray(data) ? data[0] : data;
+}
+async function getIP(){
+  try { const r = await fetch("https://api.ipify.org?format=json", { cache: "no-store" }); return r.ok ? (await r.json()).ip || null : null; }
+  catch(e){ return null; }
+}
+
+/* ---------- стан ---------- */
+let state = null, timerH = null, finishing = false, lastViol = 0, armedAt = 0, vw0 = 0;
+
+function save(){ try{ if(state) localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+function load(){
+  try{
+    const s = JSON.parse(localStorage.getItem(KEY) || "null");
+    if(!s || typeof s !== "object" || !Array.isArray(s.questions)) return null;
+    s.answers = (s.answers || []).slice(0, s.questions.length);
+    while(s.answers.length < s.questions.length) s.answers.push([]);
+    s.leaves = Number(s.leaves) || 0;
+    return s;
+  }catch(e){ return null; }
+}
+function clearLocal(){ try{ localStorage.removeItem(KEY); }catch(e){} state = null; }
+
+function gradeOf(p){
+  const t = [[1,12],[.94,11],[.86,10],[.78,9],[.70,8],[.62,7],[.54,6],[.46,5],[.38,4],[.20,3]];
+  for(const [min, g] of t) if(p >= min) return g;
+  return p > 0 ? 2 : 1;
+}
+function calc(){
+  let ok = 0;
+  state.questions.forEach((q, i) => {
+    const u = [...(state.answers[i] || [])].sort((a,b) => a-b);
+    const r = [...q.c].sort((a,b) => a-b);
+    if(u.length && JSON.stringify(u) === JSON.stringify(r)) ok++;
+  });
+  const n = state.questions.length, p = n ? ok / n : 0;
+  return { correct: ok, wrong: n - ok, percent: p, grade: gradeOf(p) };
+}
+
+/* ---------- екрани ---------- */
+function show(id){ ["startScreen","testScreen","resultScreen"].forEach(s => $(s).classList.toggle("hidden", s !== id)); window.scrollTo(0,0); }
+function startErr(t){ $("startError").textContent = t; $("startError").classList.remove("hidden"); }
+function startErrHide(){ $("startError").classList.add("hidden"); }
+
+function ask(text){
+  return new Promise(res => {
+    $("confirmText").textContent = text; $("confirmBox").style.display = "flex";
+    const done = v => { $("confirmBox").style.display = "none"; $("confirmOk").onclick = $("confirmNo").onclick = null; res(v); };
+    $("confirmOk").onclick = () => done(true); $("confirmNo").onclick = () => done(false);
+  });
+}
+
+/* ---------- інформація про спроби ---------- */
+let infoSeq = 0;
+async function updateInfo(){
+  const code = $("studentCode").value.trim();
+  const seq = ++infoSeq;
+  $("resetBox").classList.add("hidden");
+  if(code.length < 2){ $("attemptInfo").textContent = ""; $("startBtn").disabled = false; return; }
+  try{
+    const d = await rpc("get_student_test_info", { p_test_id: CONFIG.testId, p_student_code: code });
+    if(seq !== infoSeq) return;
+    const used = Number(d && d.attempts_used) || 0;
+    const left = (d && d.attempts_left != null) ? Number(d.attempts_left) : Math.max(0, MAX - used);
+    if(left <= 0){
+      $("attemptInfo").textContent = "Використано спроб: " + MAX + " із " + MAX + ".";
+      $("startBtn").disabled = true;
+      $("resetBox").classList.remove("hidden");
+    }else{
+      $("attemptInfo").textContent = "Використано спроб: " + used + " із " + MAX + ". Залишилось: " + left + ".";
+      $("startBtn").disabled = false;
+    }
+  }catch(e){
+    if(seq !== infoSeq) return;
+    $("attemptInfo").textContent = "Не вдалося перевірити кількість спроб. Перевірте Інтернет.";
+    $("startBtn").disabled = false;
+  }
+}
+
+/* ---------- старт ---------- */
+async function startTest(){
+  startErrHide();
+  const code = $("studentCode").value.trim(), name = $("studentName").value.trim(), group = $("studentGroup").value.trim();
+  if(code.length < 2){ startErr("Введіть код здобувача освіти."); $("studentCode").focus(); return; }
+  if(name.length < 2){ startErr("Введіть ПІБ."); $("studentName").focus(); return; }
+  if(!group){ startErr("Введіть групу."); $("studentGroup").focus(); return; }
+
+  $("startBtn").disabled = true; $("startBtn").textContent = "Перевірка доступності спроби...";
+  try{
+    const ip = await getIP();
+    const body = { p_test_id: CONFIG.testId, p_student_code: code, p_student_name: name, p_browser_id: browserId, p_device_id: deviceId, p_ip_address: ip };
+    let d;
+    try{ d = await rpc("start_test_attempt", Object.assign({ p_student_group: group, p_max_score: TOTAL }, body)); }
+    catch(e){
+      // якщо функція на сервері не має параметра p_max_score — пробуємо без нього
+      if(/find the function|PGRST202/i.test(e.message)) d = await rpc("start_test_attempt", body); else throw e;
+    }
+    if(!d || (d.success !== true && d.allowed !== true)){
+      if(d && d.error === "browser_changed") throw new Error("Для цього коду вже використовується інший браузер або пристрій.");
+      if(d && d.error === "attempts_finished") throw new Error(d.message || "Усі спроби вже використано.");
+      throw new Error((d && (d.message || d.error)) || "Не вдалося розпочати тест.");
+    }
+    const startedAt = d.started_at ? new Date(d.started_at).getTime() : Date.now();
+    state = {
+      active: true, finished: false, studentCode: code, studentName: name, studentGroup: group,
+      attemptId: Number(d.attempt_id), attempt: Number(d.attempt_number) || 1,
+      current: 0, questions: buildQuestions(), leaves: 0, reason: "", saved: false, result: null,
+      endTime: startedAt + TIME * 1000
+    };
+    state.answers = state.questions.map(() => []);
+    save();
+    beginLocal(true);
+  }catch(e){
+    startErr(e.message || "Не вдалося розпочати тест.");
+    updateInfo();
+  }finally{
+    $("startBtn").textContent = "▶ Почати тест";
+    if(!(state && state.active)) $("startBtn").disabled = false;
+  }
+}
+
+function beginLocal(fresh){
+  startErrHide();
+  show("testScreen");
+  $("studentDisplay").textContent = state.studentName + " — " + state.studentGroup + " | Спроба " + state.attempt + "/" + MAX;
+  state.questions.forEach(q => { if(q.img){ const im = new Image(); im.src = q.img; } });  // підвантажуємо картинки заздалегідь
+  vw0 = vw();
+  armedAt = Date.now() + 2000;
+  render();
+  startTimer();
+  if(fresh) requestFS();
+}
+
+/* ---------- відображення питання ---------- */
+function render(){
+  const q = state.questions[state.current]; if(!q) return;
+  const n = state.questions.length;
+  $("qNum").textContent = "Питання " + (state.current + 1) + " з " + n;
+  $("qText").textContent = q.q;
+  const body = $("qBody"); body.innerHTML = "";
+
+  if(q.img){
+    const img = document.createElement("img"); img.className = "q-img"; img.alt = "Ілюстрація до питання"; img.draggable = false;
+    const err = document.createElement("div"); err.className = "img-err hidden"; err.textContent = "Не вдалося завантажити ілюстрацію. Повідомте викладача.";
+    img.onerror = () => { img.classList.add("hidden"); err.classList.remove("hidden"); };
+    img.src = q.img; body.appendChild(img); body.appendChild(err);
+  }
+  if(q.multi){ const h = document.createElement("div"); h.className = "q-hint"; h.textContent = "Оберіть усі правильні відповіді."; body.appendChild(h); }
+
+  const list = document.createElement("div"); list.className = "answers";
+  const cur = state.answers[state.current] || [];
+  q.a.forEach((text, i) => {
+    const lab = document.createElement("label"); lab.className = "ans" + (cur.includes(i) ? " sel" : "");
+    const inp = document.createElement("input"); inp.type = q.multi ? "checkbox" : "radio"; inp.name = "ans"; inp.checked = cur.includes(i);
+    inp.addEventListener("change", () => {
+      let a = state.answers[state.current] || [];
+      if(!q.multi) a = [i];
+      else a = inp.checked ? [...new Set([...a, i])] : a.filter(x => x !== i);
+      state.answers[state.current] = a.sort((x, y) => x - y);
+      list.querySelectorAll(".ans").forEach((l, k) => l.classList.toggle("sel", state.answers[state.current].includes(k)));
+      save(); progress();
+    });
+    const sp = document.createElement("span"); sp.textContent = text;
+    lab.appendChild(inp); lab.appendChild(sp); list.appendChild(lab);
+  });
+  body.appendChild(list);
+
+  $("prevBtn").disabled = state.current === 0;
+  const last = state.current === n - 1;
+  $("nextBtn").classList.toggle("hidden", last);
+  $("finishBtn").classList.toggle("hidden", !last);
+  progress(); save();
+}
+function progress(){
+  const n = state.questions.length;
+  const ans = state.answers.filter(a => a && a.length).length;
+  $("progressText").textContent = "Питання " + (state.current + 1) + " з " + n;
+  $("answeredText").textContent = "Відповіді: " + ans + "/" + n;
+  $("progressFill").style.width = (ans / n * 100) + "%";
+  $("violCounter").textContent = "⚠ Виходи: " + state.leaves + "/" + LEAVES;
+}
+
+/* ---------- таймер ---------- */
+function startTimer(){ stopTimer(); tick(); timerH = setInterval(tick, 500); }
+function stopTimer(){ if(timerH){ clearInterval(timerH); timerH = null; } }
+function tick(){
+  if(!state || !state.active) return;
+  const ms = state.endTime - Date.now();
+  if(ms <= 0){ $("timer").textContent = "00:00"; finish("time"); return; }
+  const s = Math.floor(ms / 1000), el = $("timer");
+  el.textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+  el.classList.toggle("danger", s <= 60);
+  el.classList.toggle("warning", s > 60 && s <= 300);
+}
+
+/* ---------- антисписування ---------- */
+function active(){ return state && state.active && !state.finished && !finishing; }
+function vw(){ return (window.visualViewport && window.visualViewport.width) || window.innerWidth; }
+
+async function requestFS(){
+  try{ if(document.fullscreenEnabled && !document.fullscreenElement) await document.documentElement.requestFullscreen(); }catch(e){}
+}
+function violation(reason){
+  if(!active()) return;
+  const now = Date.now();
+  if(now < armedAt || now - lastViol < 1500) return;   // один вихід = одне порушення
+  lastViol = now;
+  state.leaves++; save(); progress();
+  $("secText").innerHTML = "";
+  const t = $("secText");
+  t.append("Тест виявив: ");
+  const b = document.createElement("strong"); b.textContent = reason; t.append(b, ".");
+  t.append(document.createElement("br"), document.createElement("br"), "Виходів використано: " + state.leaves + "/" + LEAVES + ".");
+  $("secOverlay").style.display = "flex";
+  if(state.leaves >= LEAVES) setTimeout(() => finish("leaves"), 800);
+}
+document.addEventListener("visibilitychange", () => {
+  if(!state || !state.active) return;
+  if(document.hidden) violation("Перехід на іншу вкладку або програму");
+});
+window.addEventListener("blur", () => { if(!document.hidden) violation("Втрата фокусу вікна"); });
+document.addEventListener("fullscreenchange", () => {
+  if(active() && !document.fullscreenElement) violation("Вихід із повноекранного режиму");
+});
+function onResize(){
+  if(!active() || !vw0) return;
+  if(vw() / vw0 < 0.75) violation("Суттєве зменшення області тесту (розділений екран)");
+  else if(vw() > vw0) vw0 = vw();
+}
+window.addEventListener("resize", onResize);
+if(window.visualViewport) window.visualViewport.addEventListener("resize", onResize);
+
+$("secBtn").addEventListener("click", () => { $("secOverlay").style.display = "none"; requestFS(); });
+
+document.addEventListener("contextmenu", e => { if(active()) e.preventDefault(); });
+document.addEventListener("copy", e => { if(active()) e.preventDefault(); });
+document.addEventListener("keydown", e => {
+  if(!active()) return;
+  const k = (e.key || "").toLowerCase();
+  if((e.ctrlKey || e.metaKey) && ["c","v","x","a","u","s","p"].includes(k)) e.preventDefault();
+  if(e.key === "F11" || e.key === "F12") e.preventDefault();
+});
+window.addEventListener("beforeunload", e => { if(active()){ save(); e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("pagehide", () => { if(state && state.active) save(); });
+
+/* ---------- завершення ---------- */
+async function finish(reason){
+  if(!state || state.finished || finishing) return;
+  finishing = true;
+  state.active = false; state.finished = true; state.reason = reason;
+  state.result = calc(); state.saved = false;
+  save(); stopTimer();
+  $("secOverlay").style.display = "none";
+  try{ if(document.fullscreenElement) await document.exitFullscreen(); }catch(e){}
+  showResult();
+  await sendResult();
+  finishing = false;
+}
+async function sendResult(){
+  const s = $("rSave"); s.textContent = "Результат зберігається..."; s.style.color = ""; $("retrySaveBtn").classList.add("hidden");
+  try{
+    const fb = { p_test_id: CONFIG.testId, p_attempt_id: Number(state.attemptId), p_score: state.result.correct };
+    try{ await rpc("finish_test_attempt", Object.assign({ p_max_score: state.questions.length }, fb)); }
+    catch(e){ if(/find the function|PGRST202/i.test(e.message)) await rpc("finish_test_attempt", fb); else throw e; }
+    state.saved = true; save();
+    s.textContent = "✅ Результат успішно збережено."; s.style.color = "#15803d";
+  }catch(e){
+    state.saved = false; save();
+    s.textContent = "⚠ Результат не вдалося зберегти. Не закривайте сторінку, натисніть «Спробувати зберегти ще раз» або повідомте викладача.";
+    s.style.color = "#b91c1c";
+    $("retrySaveBtn").classList.remove("hidden");
+  }
+}
+function showResult(){
+  show("resultScreen");
+  const r = state.result || calc();
+  $("rGrade").textContent = r.grade;
+  $("rCorrect").textContent = r.correct; $("rWrong").textContent = r.wrong;
+  $("rPercent").textContent = Math.round(r.percent * 100) + "%";
+  $("rAttempt").textContent = state.attempt + "/" + MAX;
+  $("rReason").textContent = ({
+    manual: "Тест завершено здобувачем освіти.",
+    time: "⏰ Час тесту завершився. Питання без відповіді зараховані як неправильні.",
+    leaves: "⚠ Тест завершено автоматично через " + LEAVES + " виходи зі сторінки або зміну режиму перегляду."
+  })[state.reason] || "Тест завершено.";
+  $("rSave").textContent = state.saved ? "✅ Результат збережено." : "Результат зберігається...";
+  $("nextAttemptBtn").classList.toggle("hidden", state.attempt >= MAX);
+  $("nextAttemptBtn").textContent = "▶ Перейти до спроби " + (state.attempt + 1);
+}
+
+/* ---------- кнопки ---------- */
+$("startBtn").addEventListener("click", startTest);
+$("prevBtn").addEventListener("click", () => { if(state.current > 0){ state.current--; render(); } });
+$("nextBtn").addEventListener("click", () => { if(state.current < state.questions.length - 1){ state.current++; render(); } });
+$("finishBtn").addEventListener("click", async () => {
+  const empty = state.answers.filter(a => !a || !a.length).length;
+  const txt = empty ? "Без відповіді: " + empty + ". Завершити тест?" : "Завершити тест?";
+  if(await ask(txt)) finish("manual");
+});
+$("retrySaveBtn").addEventListener("click", sendResult);
+
+$("nextAttemptBtn").addEventListener("click", () => {
+  const s = state;
+  clearLocal();
+  $("studentCode").value = s.studentCode; $("studentName").value = s.studentName; $("studentGroup").value = s.studentGroup;
+  show("startScreen"); updateInfo();
+});
+$("homeBtn").addEventListener("click", () => {
+  clearLocal();
+  ["studentCode","studentName","studentGroup","resetPin"].forEach(id => $(id).value = "");
+  $("resetMsg").classList.add("hidden"); startErrHide();
+  show("startScreen"); updateInfo();
+});
+
+$("resetBtn").addEventListener("click", async () => {
+  const code = $("studentCode").value.trim(), pin = $("resetPin").value.trim(), m = $("resetMsg");
+  m.classList.remove("hidden");
+  if(!pin){ m.className = "msg err"; m.textContent = "Введіть PIN викладача."; return; }
+  $("resetBtn").disabled = true;
+  try{
+    const d = await rpc("reset_student_attempts", { p_test_id: CONFIG.testId, p_student_code: code, p_pin: pin });
+    if(d && d.success === false) throw new Error(d.message || "Не вдалося скинути спроби.");
+    m.className = "msg ok"; m.textContent = "Спроби скинуто.";
+    $("resetPin").value = ""; clearLocal(); await updateInfo();
+  }catch(e){ m.className = "msg err"; m.textContent = e.message || "Не вдалося скинути спроби."; }
+  finally{ $("resetBtn").disabled = false; }
+});
+
+let deb = null;
+$("studentCode").addEventListener("input", () => { if(!(state && state.active)){ clearTimeout(deb); deb = setTimeout(updateInfo, 500); } });
+$("studentCode").addEventListener("blur", () => { if(!(state && state.active)) updateInfo(); });
+
+/* ---------- запуск ---------- */
+function init(){
+  document.title = CONFIG.title;
+  $("logo").textContent = CONFIG.icon || "📝";
+  ["menuLinkStart","menuLinkResult"].forEach(id => $(id).href = CONFIG.menuUrl || "index.html");
+  $("title").textContent = CONFIG.title;
+  $("subtitle").textContent = CONFIG.subtitle || "";
+  [
+    TOTAL + " запитань.",
+    "Час виконання — " + CONFIG.minutes + " хвилин.",
+    "Максимум спроб: " + MAX + ".",
+    "У деяких питаннях може бути кілька правильних відповідей — потрібно вибрати всі.",
+    "Питання без відповіді зараховується як неправильне.",
+    "Перехід в іншу вкладку, програму або вихід із повноекранного режиму рахується як вихід.",
+    "Після " + LEAVES + " виходів тест автоматично завершується.",
+    "Таймер не зупиняється при виході з тесту.",
+    "Правильні відповіді не показуються."
+  ].forEach(t => { const li = document.createElement("li"); li.textContent = t; $("rules").appendChild(li); });
+
+  if(BASE.length < TOTAL) console.error("Недостатньо питань:", BASE.length);
+  BASE.forEach((q, i) => { if(!q.c.length || q.c.some(x => x < 0 || x >= q.a.length)) console.error("Питання " + (i + 1) + ": некоректна правильна відповідь"); });
+
+  state = load();
+  if(state && state.finished){ showResult(); if(!state.saved) sendResult(); return; }
+  if(state && state.active){
+    if(Date.now() >= state.endTime){ finish("time"); return; }
+    $("studentCode").value = state.studentCode; $("studentName").value = state.studentName; $("studentGroup").value = state.studentGroup;
+    beginLocal(false);
+    armedAt = 0; lastViol = 0;
+    violation("Перезавантаження або повторне відкриття сторінки");   // рахується як вихід
+    return;
+  }
+  state = null;
+  updateInfo();
+}
+init();
+})();
+</script>
+</body>
+</html>
