@@ -31,15 +31,7 @@ button:hover{opacity:.92}button:disabled{opacity:.5;cursor:not-allowed}
 table{width:100%;border-collapse:collapse;min-width:900px}
 th,td{border-bottom:1px solid #e2e8f0;padding:10px;text-align:left;vertical-align:middle}
 th{background:#f8fafc;font-size:14px}
-th.sortable{cursor:pointer;user-select:none;white-space:nowrap}
-th.sortable:hover{background:#eef2f7}
-th.sorted{color:#173b63;background:#e8eff7}
-th .arrow{display:inline-block;width:14px;margin-left:4px;color:#94a3b8;font-size:12px}
-th.sorted .arrow{color:#173b63}
 tr:hover td{background:#f8fafc}
-.view-toggle{display:flex;gap:6px;flex-wrap:wrap}
-.view-toggle button{background:#e2e8f0;color:#334155}
-.view-toggle button.active{background:#173b63;color:#fff}
 .badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:12px;font-weight:700}
 .badge-completed{background:#dcfce7;color:#166534}
 .badge-interrupted{background:#fee2e2;color:#991b1b}
@@ -115,13 +107,7 @@ tr:hover td{background:#f8fafc}
 </div>
 
 <div class="card">
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-    <h2 id="listTitle" style="margin:0">Список результатів</h2>
-    <div class="view-toggle">
-      <button id="viewAttempts" class="active">Усі спроби</button>
-      <button id="viewSummary">Підсумок (найкраща спроба)</button>
-    </div>
-  </div>
+  <h2>Список результатів</h2>
   <div id="tableLoading" class="loading hidden">Завантаження...</div>
   <div id="tableContainer" class="table-wrap"></div>
 </div>
@@ -149,7 +135,7 @@ const TEST_NAMES = {
 };
 
 /* Кількість питань у спробі (максимальний бал). Якщо змінюєте questionCount у тесті — змініть і тут. */
-const TEST_MAX = { kcis_2026: 60, km_2026: 50, kreslennia_2026: 30, it_2026: 20, os_2026: 25 };
+const TEST_MAX = { kcis_2026: 60, km_2026: 50, kreslennia_2026: 32, it_2026: 20, os_2026: 25 };
 
 let allResults = [];
 const $ = id => document.getElementById(id);
@@ -171,115 +157,24 @@ function calcGrade(row){
   return m ? gradeFromPercent(Number(row.score) / m) : null;
 }
 
-/* ---------- Сортування ---------- */
-const COLUMNS = [
-  { key: "num",            title: "№",          sortable: false },
-  { key: "student_code",   title: "Код",        type: "text" },
-  { key: "student_name",   title: "ПІБ",        type: "text" },
-  { key: "student_group",  title: "Група",      type: "text" },
-  { key: "attempt_number", title: "Спроба",     type: "num" },
-  { key: "status",         title: "Статус",     type: "text" },
-  { key: "score",          title: "Бал",        type: "num" },
-  { key: "grade",          title: "Оцінка",     type: "num" },
-  { key: "started_at",     title: "Початок",    type: "date" },
-  { key: "finished_at",    title: "Завершення", type: "date" }
-];
-const SUMMARY_COLUMNS = [
-  { key: "num",            title: "№",                  sortable: false },
-  { key: "student_code",   title: "Код",                type: "text" },
-  { key: "student_name",   title: "ПІБ",                type: "text" },
-  { key: "student_group",  title: "Група",              type: "text" },
-  { key: "attempts_count", title: "Спроб",              type: "num" },
-  { key: "best_attempt",   title: "Найкраща спроба",    type: "num" },
-  { key: "best_score",     title: "Бал",                type: "num" },
-  { key: "grade",          title: "Підсумкова оцінка",  type: "num" },
-  { key: "last_started",   title: "Остання спроба",     type: "date" }
-];
-const collator = new Intl.Collator("uk", { numeric: true, sensitivity: "base" });
-let viewMode = "attempts";   // "attempts" | "summary"
-const sortStates = {
-  attempts: { key: "started_at", dir: "desc" },
-  summary:  { key: "student_name", dir: "asc" }
-};
-const DESC_FIRST = ["started_at","finished_at","score","grade","best_score","last_started","attempts_count"];
-
-function sortValue(row, col){
-  let v;
-  if(viewMode === "attempts" && col.key === "grade") v = calcGrade(row);
-  else if(viewMode === "attempts" && col.key === "score") v = hasScore(row) ? row.score : null;
-  else v = row[col.key];
-  if(v === null || v === undefined || v === "") return null;
-  if(col.type === "num") { const n = Number(v); return Number.isNaN(n) ? null : n; }
-  if(col.type === "date"){ const t = new Date(v).getTime(); return Number.isNaN(t) ? null : t; }
-  return String(v);
-}
-function sortRows(rows){
-  const cols = viewMode === "summary" ? SUMMARY_COLUMNS : COLUMNS;
-  const st = sortStates[viewMode];
-  const col = cols.find(c => c.key === st.key) || cols[1];
-  const dir = st.dir === "asc" ? 1 : -1;
-  return [...rows].sort((a, b) => {
-    const x = sortValue(a, col), y = sortValue(b, col);
-    if(x === null && y === null) return 0;
-    if(x === null) return 1;      // порожні значення завжди внизу
-    if(y === null) return -1;
-    const r = col.type === "text" ? collator.compare(x, y) : (x - y);
-    return r * dir;
-  });
-}
-function getSortedResults(){ return sortRows(getFilteredResults()); }
-function setSort(key){
-  const st = sortStates[viewMode];
-  if(st.key === key) st.dir = st.dir === "asc" ? "desc" : "asc";
-  else { st.key = key; st.dir = DESC_FIRST.includes(key) ? "desc" : "asc"; }
-  renderResults();
-}
-
-/* Підсумок: для кожного учня береться найкраща спроба (за оцінкою, потім за балом) */
-function buildSummary(rows){
-  const map = new Map();
-  rows.forEach(r => {
-    const k = String(r.student_code || "").trim();
-    if(!map.has(k)) map.set(k, []);
-    map.get(k).push(r);
-  });
-  return [...map.values()].map(list => {
-    let best = null;
-    list.forEach(r => {
-      const g = calcGrade(r);
-      if(g === null) return;
-      const gn = Number(g), sc = hasScore(r) ? Number(r.score) : 0;
-      if(!best || gn > best.g || (gn === best.g && sc > best.sc)) best = { r, g: gn, sc };
-    });
-    const latest = [...list].sort((a, b) => new Date(b.started_at || 0) - new Date(a.started_at || 0))[0];
-    return {
-      student_code: latest.student_code || "",
-      student_name: latest.student_name || "",
-      student_group: latest.student_group || "",
-      attempts_count: list.length,
-      best_attempt: best ? best.r.attempt_number : null,
-      best_score: best && hasScore(best.r) ? best.r.score : null,
-      max: best ? calcMax(best.r) : 0,
-      grade: best ? best.g : null,
-      last_started: latest.started_at
-    };
-  });
-}
-function getSortedSummary(){ return sortRows(buildSummary(getFilteredResults())); }
-
-function setView(mode){
-  viewMode = mode;
-  $("viewAttempts").classList.toggle("active", mode === "attempts");
-  $("viewSummary").classList.toggle("active", mode === "summary");
-  renderResults();
-}
-
 /* ---------- Заповнення списку тестів ---------- */
-Object.keys(TEST_NAMES).forEach(id => {
-  const o = document.createElement("option");
-  o.value = id; o.textContent = TEST_NAMES[id];
-  $("testSelect").appendChild(o);
-});
+function fillSelect(){
+  const keep = $("testSelect").value;
+  $("testSelect").innerHTML = "";
+  Object.keys(TEST_NAMES).forEach(id => {
+    const o = document.createElement("option");
+    o.value = id; o.textContent = TEST_NAMES[id];
+    $("testSelect").appendChild(o);
+  });
+  if(keep && TEST_NAMES[keep]) $("testSelect").value = keep;
+}
+fillSelect();
+// нові тести з редактора підтягуються з tests.json
+fetch("tests.json?t=" + Date.now()).then(r => r.ok ? r.json() : null).then(m => {
+  if(!m) return;
+  m.tests.filter(t => t.id).forEach(t => { TEST_NAMES[t.id] = t.title; TEST_MAX[t.id] = t.questions; });
+  fillSelect();
+}).catch(() => {});
 
 async function supabaseRPC(name, body){
   const { data, error } = await supabaseClient.rpc(name, body);
@@ -360,26 +255,15 @@ function getFilteredResults(){
     String(r.student_name || "").toLowerCase().includes(q));
 }
 
-function thHtml(cols, st){
-  return "<thead><tr>" + cols.map(c => {
-    if(c.sortable === false) return "<th>" + c.title + "</th>";
-    const on = st.key === c.key;
-    const arrow = on ? (st.dir === "asc" ? "▲" : "▼") : "↕";
-    return '<th class="sortable' + (on ? " sorted" : "") + '" data-key="' + c.key + '" title="Сортувати">' +
-           c.title + '<span class="arrow">' + arrow + "</span></th>";
-  }).join("") + "</tr></thead>";
-}
-
 function renderResults(){
-  updateStats(getFilteredResults());
-  $("listTitle").textContent = viewMode === "summary" ? "Підсумкові оцінки (найкраща спроба)" : "Список результатів";
-  if(viewMode === "summary"){ renderSummary(); return; }
-
-  const rows = getSortedResults();
+  const rows = getFilteredResults();
+  updateStats(rows);
   if(!rows.length){ $("tableContainer").innerHTML = '<div class="empty">Результатів не знайдено.</div>'; return; }
 
-  let html = "<table>" + thHtml(COLUMNS, sortStates.attempts) + "<tbody>";
-  rows.forEach((row, i) => {
+  const sorted = [...rows].sort((a, b) => new Date(b.started_at || 0) - new Date(a.started_at || 0));
+  let html = '<table><thead><tr><th>№</th><th>Код</th><th>ПІБ</th><th>Група</th><th>Спроба</th><th>Статус</th><th>Бал</th><th>Оцінка</th><th>Початок</th><th>Завершення</th></tr></thead><tbody>';
+
+  sorted.forEach((row, i) => {
     const status = String(row.status || "");
     let st = escapeHtml(status);
     if(status === "completed") st = '<span class="badge badge-completed">Завершено</span>';
@@ -402,25 +286,7 @@ function renderResults(){
       "<td>" + formatDate(row.started_at) + "</td>" +
       "<td>" + formatDate(row.finished_at) + "</td></tr>";
   });
-  $("tableContainer").innerHTML = html + "</tbody></table>";
-}
 
-function renderSummary(){
-  const rows = getSortedSummary();
-  if(!rows.length){ $("tableContainer").innerHTML = '<div class="empty">Результатів не знайдено.</div>'; return; }
-  let html = "<table>" + thHtml(SUMMARY_COLUMNS, sortStates.summary) + "<tbody>";
-  rows.forEach((r, i) => {
-    html += "<tr>" +
-      "<td>" + (i + 1) + "</td>" +
-      "<td>" + escapeHtml(r.student_code) + "</td>" +
-      "<td>" + escapeHtml(r.student_name) + "</td>" +
-      "<td>" + escapeHtml(r.student_group || "—") + "</td>" +
-      "<td>" + r.attempts_count + "</td>" +
-      "<td>" + (r.best_attempt ?? "—") + "</td>" +
-      "<td>" + (r.best_score !== null ? r.best_score + " / " + (r.max || "?") : "—") + "</td>" +
-      "<td><b>" + (r.grade !== null ? r.grade : "—") + "</b></td>" +
-      "<td>" + formatDate(r.last_started) + "</td></tr>";
-  });
   $("tableContainer").innerHTML = html + "</tbody></table>";
 }
 
@@ -444,43 +310,27 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[ch]));
 }
 
-/* ---------- CSV (у тому ж порядку, що й у таблиці) ---------- */
+/* ---------- CSV ---------- */
 function csvCell(v){ return '"' + String(v ?? "").replace(/"/g, '""') + '"'; }
 
 function exportCSV(){
-  const tid = $("testSelect").value;
-  const testName = TEST_NAMES[tid] || tid;
-  let lines, suffix;
-
-  if(viewMode === "summary"){
-    const rows = getSortedSummary();
-    if(!rows.length){ alert("Немає результатів для експорту."); return; }
-    lines = [["Тест","Код","ПІБ","Група","Кількість спроб","Найкраща спроба №","Бал","Максимум","Підсумкова оцінка","Остання спроба"].map(csvCell).join(";")];
-    rows.forEach(r => lines.push([
-      testName, r.student_code, r.student_name, r.student_group, r.attempts_count,
-      r.best_attempt ?? "", r.best_score ?? "", r.max || "", r.grade ?? "", r.last_started || ""
-    ].map(csvCell).join(";")));
-    suffix = "_summary.csv";
-  }else{
-    const rows = getSortedResults();
-    if(!rows.length){ alert("Немає результатів для експорту."); return; }
-    lines = [["Тест","Код","ПІБ","Група","Спроба","Статус","Бал","Максимум","Оцінка","Початок","Завершення"].map(csvCell).join(";")];
-    rows.forEach(r => {
-      const t = r.test_id || tid;
-      lines.push([
-        TEST_NAMES[t] || t, r.student_code || "", r.student_name || "", r.student_group || "",
-        r.attempt_number || "", r.status || "", r.score ?? "", calcMax(r) || "", calcGrade(r) ?? "",
-        r.started_at || "", r.finished_at || ""
-      ].map(csvCell).join(";"));
-    });
-    suffix = "_results.csv";
-  }
-
+  const rows = getFilteredResults();
+  if(!rows.length){ alert("Немає результатів для експорту."); return; }
+  const lines = [["Тест","Код","ПІБ","Група","Спроба","Статус","Бал","Максимум","Оцінка","Початок","Завершення"].map(csvCell).join(";")];
+  rows.forEach(r => {
+    const tid = r.test_id || $("testSelect").value;
+    lines.push([
+      TEST_NAMES[tid] || tid, r.student_code || "", r.student_name || "", r.student_group || "",
+      r.attempt_number || "", r.status || "", r.score ?? "", calcMax(r) || "", calcGrade(r) ?? "",
+      r.started_at || "", r.finished_at || ""
+    ].map(csvCell).join(";"));
+  });
   const blob = new Blob(["\uFEFF" + lines.join("\n")], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
+  const tid = $("testSelect").value;
   a.href = url;
-  a.download = testName.replace(/[^а-яА-ЯіІїЇєЄa-zA-Z0-9]+/g, "_") + suffix;
+  a.download = (TEST_NAMES[tid] || tid).replace(/[^а-яА-ЯіІїЇєЄa-zA-Z0-9]+/g, "_") + "_results.csv";
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
 }
@@ -530,14 +380,8 @@ $("testSelect").addEventListener("change", () => { $("searchInput").value = ""; 
 $("searchInput").addEventListener("input", renderResults);
 $("refreshBtn").addEventListener("click", loadResults);
 $("exportBtn").addEventListener("click", exportCSV);
-$("viewAttempts").addEventListener("click", () => setView("attempts"));
-$("viewSummary").addEventListener("click", () => setView("summary"));
 $("clearTestBtn").addEventListener("click", clearSelectedTest);
 $("clearAllBtn").addEventListener("click", clearAllTests);
-$("tableContainer").addEventListener("click", e => {
-  const th = e.target.closest("th.sortable");
-  if(th) setSort(th.dataset.key);
-});
 
 async function init(){
   try{
