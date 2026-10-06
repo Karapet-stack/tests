@@ -1,0 +1,99 @@
+{
+ "tests": [
+  {
+   "id": "kcis_2026",
+   "file": "test-kcis.html",
+   "title": "Засоби комп’ютерних інформаційних систем",
+   "icon": "💻",
+   "desc": "Будова та принцип роботи ПК, пристрої, ОС і файли, захист даних",
+   "subtitle": "",
+   "questions": 60,
+   "minutes": 30,
+   "attempts": 3,
+   "ready": true
+  },
+  {
+   "id": "km_2026",
+   "file": "test-merezhi.html",
+   "title": "Комп’ютерні мережі",
+   "icon": "🌐",
+   "desc": "Протоколи, адреси, обладнання, Wi-Fi, DNS",
+   "subtitle": "",
+   "questions": 50,
+   "minutes": 30,
+   "attempts": 3,
+   "ready": true
+  },
+  {
+   "id": "kreslennia_2026",
+   "file": "test-kreslennia.html",
+   "title": "Креслення",
+   "icon": "📐",
+   "desc": "Лінії, розміри, види, розрізи, масштаби",
+   "subtitle": "",
+   "questions": 32,
+   "minutes": 30,
+   "attempts": 3,
+   "ready": true
+  },
+  {
+   "id": "it_2026",
+   "file": "test-it.html",
+   "title": "Інформаційні технології",
+   "icon": "🖥️",
+   "desc": "Інформація, ОС і файли, Word, Excel, презентації, Інтернет, безпека",
+   "subtitle": "",
+   "questions": 20,
+   "minutes": 20,
+   "attempts": 3,
+   "ready": true
+  },
+  {
+   "id": "os_2026",
+   "file": "test-os.html",
+   "title": "Операційні системи",
+   "icon": "🪟",
+   "desc": "Призначення ОС, інтерфейс, файли й папки, диски, процеси, налаштування, безпека",
+   "subtitle": "",
+   "questions": 25,
+   "minutes": 25,
+   "attempts": 3,
+   "ready": true
+  },
+  {
+   "title": "Веб-дизайн",
+   "icon": "",
+   "ready": false
+  },
+  {
+   "title": "Інженерна графіка",
+   "icon": "",
+   "ready": false
+  },
+  {
+   "title": "САПР",
+   "icon": "",
+   "ready": false
+  },
+  {
+   "title": "Комп’ютерна графіка",
+   "icon": "",
+   "ready": false
+  },
+  {
+   "title": "Бази даних",
+   "icon": "",
+   "ready": false
+  },
+  {
+   "title": "Комп’ютерні системи",
+   "icon": "",
+   "ready": false
+  },
+  {
+   "title": "Вебтехнології",
+   "icon": "",
+   "ready": false
+  }
+ ]
+}
