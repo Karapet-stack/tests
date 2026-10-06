@@ -1169,7 +1169,7 @@ function beginLocal(fresh){
   show("testScreen");
   $("studentDisplay").textContent = state.studentName + " — " + state.studentGroup + " | Спроба " + state.attempt + "/" + MAX;
   state.questions.forEach(q => { if(q.img){ const im = new Image(); im.src = q.img; } });  // підвантажуємо картинки заздалегідь
-  vw0 = vw();
+  vw0 = vw(); vdpr = window.devicePixelRatio; outEpisode = false; vEpisode = false;
   armedAt = Date.now() + 2000;
   render();
   startTimer();
@@ -1230,6 +1230,7 @@ function startTimer(){ stopTimer(); tick(); timerH = setInterval(tick, 500); }
 function stopTimer(){ if(timerH){ clearInterval(timerH); timerH = null; } }
 function tick(){
   if(!state || !state.active) return;
+  if(state.leaves >= LEAVES){ finish("leaves"); return; }   // страховка: ліміт виходів вичерпано
   const ms = state.endTime - Date.now();
   if(ms <= 0){ $("timer").textContent = "00:00"; finish("time"); return; }
   const s = Math.floor(ms / 1000), el = $("timer");
@@ -1245,35 +1246,57 @@ function vw(){ return (window.visualViewport && window.visualViewport.width) || 
 async function requestFS(){
   try{ if(document.fullscreenEnabled && !document.fullscreenElement) await document.documentElement.requestFullscreen(); }catch(e){}
 }
+let outEpisode = false, vEpisode = false, vdpr = window.devicePixelRatio;
+
+/* Повертає true, якщо вихід пораховано (або це той самий вихід, що вже пораховано). */
 function violation(reason){
-  if(!active()) return;
+  if(!active()) return false;
   const now = Date.now();
-  if(now < armedAt || now - lastViol < 1500) return;   // один вихід = одне порушення
+  if(now < armedAt) return false;                 // коротка пауза одразу після старту
+  if(now - lastViol < 1500) return true;          // той самий вихід (кілька подій одночасно)
   lastViol = now;
   state.leaves++; save(); progress();
-  $("secText").innerHTML = "";
-  const t = $("secText");
+  const t = $("secText"); t.textContent = "";
   t.append("Тест виявив: ");
   const b = document.createElement("strong"); b.textContent = reason; t.append(b, ".");
   t.append(document.createElement("br"), document.createElement("br"), "Виходів використано: " + state.leaves + "/" + LEAVES + ".");
   $("secOverlay").style.display = "flex";
-  if(state.leaves >= LEAVES) setTimeout(() => finish("leaves"), 800);
+  if(state.leaves >= LEAVES) finish("leaves");    // без затримки: тест закривається одразу
+  return true;
 }
-document.addEventListener("visibilitychange", () => {
-  if(!state || !state.active) return;
-  if(document.hidden) violation("Перехід на іншу вкладку або програму");
-});
-window.addEventListener("blur", () => { if(!document.hidden) violation("Втрата фокусу вікна"); });
+
+/* Втрата фокусу: інша вкладка, інше вікно, помічник/ШІ поверх сторінки, бічна панель, DevTools */
+function focusLost(){ return document.hidden || !document.hasFocus(); }
+function checkFocus(reason){
+  if(!active()) return;
+  if(focusLost()){
+    if(!outEpisode) outEpisode = violation(reason || (document.hidden
+      ? "Перехід на іншу вкладку або програму"
+      : "Втрата фокусу: відкрито інше вікно, помічник або ШІ поверх тесту"));
+  }else outEpisode = false;
+}
+document.addEventListener("visibilitychange", () => checkFocus("Перехід на іншу вкладку або програму"));
+window.addEventListener("blur", () => checkFocus("Втрата фокусу: відкрито інше вікно, помічник або ШІ поверх тесту"));
+window.addEventListener("focus", () => checkFocus());
+setInterval(() => checkFocus(), 400);              // страховка, якщо браузер не надіслав подію blur
+
 document.addEventListener("fullscreenchange", () => {
   if(active() && !document.fullscreenElement) violation("Вихід із повноекранного режиму");
 });
+
 function onResize(){
   if(!active() || !vw0) return;
-  if(vw() / vw0 < 0.75) violation("Суттєве зменшення області тесту (розділений екран)");
-  else if(vw() > vw0) vw0 = vw();
+  if(window.devicePixelRatio !== vdpr){ vdpr = window.devicePixelRatio; vw0 = vw(); return; }   // змінився масштаб сторінки
+  if(vw() / vw0 < 0.9){
+    if(!vEpisode) vEpisode = violation("Зменшення області тесту (розділений екран або бічна панель)");
+  }else{
+    vEpisode = false;
+    if(vw() > vw0) vw0 = vw();
+  }
 }
 window.addEventListener("resize", onResize);
 if(window.visualViewport) window.visualViewport.addEventListener("resize", onResize);
+window.addEventListener("orientationchange", () => { vw0 = 0; setTimeout(() => { vw0 = vw(); }, 700); });
 
 $("secBtn").addEventListener("click", () => { $("secOverlay").style.display = "none"; requestFS(); });
 
@@ -1296,8 +1319,8 @@ async function finish(reason){
   state.result = calc(); state.saved = false;
   save(); stopTimer();
   $("secOverlay").style.display = "none";
-  try{ if(document.fullscreenElement) await document.exitFullscreen(); }catch(e){}
-  showResult();
+  showResult();                                     // спершу показуємо результат — тест закрито
+  try{ if(document.fullscreenElement) document.exitFullscreen().catch(() => {}); }catch(e){}   // без очікування
   await sendResult();
   finishing = false;
 }
@@ -1389,7 +1412,7 @@ function init(){
     "Максимум спроб: " + MAX + ".",
     "У деяких питаннях може бути кілька правильних відповідей — потрібно вибрати всі.",
     "Питання без відповіді зараховується як неправильне.",
-    "Перехід в іншу вкладку, програму або вихід із повноекранного режиму рахується як вихід.",
+    "Відкриття іншої вкладки, програми, вікна, помічника чи ШІ поверх тесту та вихід із повноекранного режиму рахуються як вихід.",
     "Після " + LEAVES + " виходів тест автоматично завершується.",
     "Таймер не зупиняється при виході з тесту.",
     "Правильні відповіді не показуються."
