@@ -49,7 +49,8 @@ pre{background:#f1f5f9;padding:10px;border-radius:8px;font-size:13px;overflow:au
 <div id="listCard" class="card hidden">
   <h2>2. Тести</h2>
   <div id="list"></div>
-  <div class="row"><button id="newBtn" class="ok">+ Новий тест</button></div>
+  <div class="row"><button id="newBtn" class="ok">+ Новий тест</button><button id="updAll" class="sec">Оновити всі тести з шаблону</button></div>
+  <div id="msg3" class="msg hidden"></div>
 </div>
 
 <div id="edCard" class="card hidden">
@@ -135,6 +136,30 @@ function renderList(){
     row.append(l, b); box.appendChild(row);
   });
 }
+
+/* ---------- оновлення всіх тестів з test-template.html ---------- */
+$("updAll").onclick = async () => {
+  if(!confirm("Перезібрати всі тести з поточного test-template.html?\nПитання та налаштування кожного тесту збережуться.")) return;
+  $("updAll").disabled = true;
+  try{
+    const tpl = await getFile("test-template.html");
+    if(!tpl) throw new Error("У репозиторії немає test-template.html.");
+    const list = manifest.tests.filter(t => t.file);
+    let changed = 0, same = 0; const skipped = [];
+    for(let i = 0; i < list.length; i++){
+      const t = list[i];
+      show("msg3", "Оновлення " + (i + 1) + " з " + list.length + ": " + t.file + "…", true);
+      const f = await getFile(t.file);
+      const m = f && f.text.match(/const CONFIG = (\{[\s\S]*?\});\s*const Q = (\[[\s\S]*?\]);\s*<\/script>/);
+      if(!m){ skipped.push(t.file); continue; }
+      const html = tpl.text.replace(/const CONFIG = \{[\s\S]*?<\/script>/, () => "const CONFIG = " + m[1] + ";\n\nconst Q = " + m[2] + ";\n<" + "/script>");
+      if(html === f.text){ same++; continue; }
+      await putFile(t.file, html, f.sha, "Оновлено рушій тесту: " + t.title); changed++;
+    }
+    show("msg3", "✅ Оновлено: " + changed + ", без змін: " + same + (skipped.length ? ".\n⚠ Пропущено (файл не знайдено або в іншому форматі): " + skipped.join(", ") : "."), !skipped.length || changed > 0);
+  }catch(e){ show("msg3", "Помилка: " + e.message, false); }
+  $("updAll").disabled = false;
+};
 
 /* ---------- формат питань ---------- */
 function parseQ(text){
