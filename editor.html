@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Редактор тестів</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fa;color:#17202a}
+.wrap{max-width:900px;margin:0 auto;padding:20px 14px 60px}
+h1{font-size:24px;margin:10px 0 4px}
+.sub{color:#64748b;margin-bottom:18px;font-size:14px}
+.card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.07);margin-bottom:16px}
+h2{margin:0 0 12px;font-size:18px}
+label{display:block;font-weight:700;font-size:14px;margin:10px 0 5px}
+input,textarea{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;font-family:inherit}
+textarea{min-height:340px;font-family:Consolas,monospace;font-size:14px;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+button{border:0;border-radius:8px;padding:10px 16px;font-size:15px;font-weight:700;cursor:pointer;background:#173b63;color:#fff}
+button.sec{background:#64748b}button.ok{background:#16a34a}button:disabled{opacity:.5}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #e2e8f0}
+.tag{font-size:12px;padding:3px 8px;border-radius:20px;background:#dcfce7;color:#166534;font-weight:700}
+.tag.d{background:#e5e7eb;color:#6b7280}
+.msg{margin-top:12px;padding:10px 12px;border-radius:8px;font-size:14px;white-space:pre-wrap}
+.msg.e{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}.msg.g{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.hint{font-size:13px;color:#64748b;line-height:1.5}
+pre{background:#f1f5f9;padding:10px;border-radius:8px;font-size:13px;overflow:auto;margin:6px 0}
+.hidden{display:none!important}
+</style>
+</head>
+<body><div class="wrap">
+<h1>Редактор тестів</h1>
+<div class="sub">Створює й змінює тести прямо в репозиторії GitHub та оновлює головне меню. <a href="index.html">← Меню</a></div>
+
+<div class="card">
+  <h2>1. Підключення до GitHub</h2>
+  <div class="grid">
+    <div><label>Власник (логін)</label><input id="owner"></div>
+    <div><label>Репозиторій</label><input id="repo"></div>
+    <div><label>Гілка</label><input id="branch" value="main"></div>
+  </div>
+  <label>Токен GitHub (fine-grained, лише цей репозиторій, Contents: Read and write)</label>
+  <input id="token" type="password" autocomplete="off">
+  <div class="row"><button id="connect">Підключитись і завантажити список</button><button class="sec" id="forget">Забути токен</button></div>
+  <div id="msg1" class="msg hidden"></div>
+</div>
+
+<div id="listCard" class="card hidden">
+  <h2>2. Тести</h2>
+  <div id="list"></div>
+  <div class="row"><button id="newBtn" class="ok">+ Новий тест</button></div>
+</div>
+
+<div id="edCard" class="card hidden">
+  <h2 id="edTitle">Тест</h2>
+  <div class="grid">
+    <div><label>Назва</label><input id="f_title"></div>
+    <div><label>Підзаголовок</label><input id="f_sub"></div>
+    <div><label>Іконка (емодзі)</label><input id="f_icon" placeholder="🧪"></div>
+    <div><label>Ідентифікатор (a-z, 0-9, _)</label><input id="f_id" placeholder="web_2026"></div>
+    <div><label>Хвилин</label><input id="f_min" type="number" value="30"></div>
+    <div><label>Питань у спробі</label><input id="f_cnt" type="number" value="20"></div>
+    <div><label>Спроб</label><input id="f_att" type="number" value="3"></div>
+  </div>
+  <label>Короткий опис для меню</label><input id="f_desc">
+  <label><input id="f_ready" type="checkbox" style="width:auto" checked> Опубліковано (інакше в меню буде «Тест готується»)</label>
+
+  <label>Питання</label>
+  <div class="hint">Формат: питання, потім варіанти — <b>+</b> правильний, <b>-</b> хибний. Між питаннями порожній рядок. Кілька «+» = питання з кількома відповідями. Картинка: рядок <b>img: img/назва.png</b> під питанням.
+<pre>Яка пам’ять втрачає дані без живлення?
+- SSD
++ Оперативна
+- Флешка</pre></div>
+  <textarea id="qtext"></textarea>
+  <div class="hint" id="cnt"></div>
+  <div class="row">
+    <input type="file" id="imgFile" accept="image/*" style="width:auto"><button class="sec" id="imgBtn">Завантажити картинку</button>
+  </div>
+  <div class="row"><button id="saveBtn" class="ok">Зберегти й опублікувати</button><button class="sec" id="cancel">Закрити</button></div>
+  <div id="msg2" class="msg hidden"></div>
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const LS = "editor_cfg";
+let manifest = { tests: [] }, cur = null;
+
+/* ---------- налаштування ---------- */
+const saved = JSON.parse(localStorage.getItem(LS) || "{}");
+["owner", "repo", "branch", "token"].forEach(k => { if(saved[k]) $(k).value = saved[k]; });
+const cfg = () => ({ o: $("owner").value.trim(), r: $("repo").value.trim(), b: $("branch").value.trim() || "main", t: $("token").value.trim() });
+$("forget").onclick = () => { $("token").value = ""; localStorage.removeItem(LS); show("msg1", "Токен видалено з цього браузера.", true); };
+function show(id, text, ok){ const e = $(id); e.textContent = text; e.className = "msg " + (ok ? "g" : "e"); }
+
+/* ---------- GitHub API ---------- */
+const enc = s => { let b = ""; new TextEncoder().encode(s).forEach(x => b += String.fromCharCode(x)); return btoa(b); };
+const dec = b => new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\n/g, "")), c => c.charCodeAt(0)));
+async function api(path, method = "GET", body){
+  const c = cfg();
+  const url = `https://api.github.com/repos/${c.o}/${c.r}/contents/${path}` + (method === "GET" ? `?ref=${encodeURIComponent(c.b)}&t=${Date.now()}` : "");
+  const res = await fetch(url, { method, headers: { Authorization: "Bearer " + c.t, Accept: "application/vnd.github+json" }, body: body ? JSON.stringify(body) : undefined });
+  if(res.status === 404 && method === "GET") return null;
+  const j = await res.json();
+  if(!res.ok) throw new Error(j.message || ("HTTP " + res.status));
+  return j;
+}
+const getFile = async p => { const j = await api(p); return j ? { text: dec(j.content), sha: j.sha } : null; };
+const putFile = (p, content, sha, msg, b64) => api(p, "PUT", { message: msg, content: b64 ? content : enc(content), branch: cfg().b, ...(sha ? { sha } : {}) });
+
+/* ---------- підключення і список ---------- */
+$("connect").onclick = async () => {
+  const c = cfg();
+  if(!c.o || !c.r || !c.t){ show("msg1", "Заповніть власника, репозиторій і токен.", false); return; }
+  localStorage.setItem(LS, JSON.stringify({ owner: c.o, repo: c.r, branch: c.b, token: c.t }));
+  try{
+    const f = await getFile("tests.json");
+    manifest = f ? JSON.parse(f.text) : { tests: [] };
+    show("msg1", f ? "Підключено. Тестів у списку: " + manifest.tests.length : "Підключено. Файлу tests.json ще немає — він буде створений при першому збереженні.", true);
+    renderList(); $("listCard").classList.remove("hidden");
+  }catch(e){ show("msg1", "Не вдалося підключитись: " + e.message, false); }
+};
+function renderList(){
+  const box = $("list"); box.innerHTML = "";
+  manifest.tests.forEach(t => {
+    const row = document.createElement("div"); row.className = "item";
+    const l = document.createElement("div");
+    l.innerHTML = "<b></b> <span class='tag'></span><div class='hint'></div>";
+    l.querySelector("b").textContent = (t.icon || "") + " " + t.title;
+    const tag = l.querySelector(".tag"); tag.textContent = t.file ? (t.ready ? "опубліковано" : "чернетка") : "заготовка"; if(!t.ready) tag.classList.add("d");
+    l.querySelector(".hint").textContent = t.file ? (t.id + " · " + t.file) : "ще без тесту";
+    const b = document.createElement("button"); b.textContent = t.file ? "Редагувати" : "Створити";
+    b.onclick = () => openTest(t);
+    row.append(l, b); box.appendChild(row);
+  });
+}
+
+/* ---------- формат питань ---------- */
+function parseQ(text){
+  const blocks = text.replace(/\r/g, "").split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+  return blocks.map((b, i) => {
+    const q = { q: "", a: [], c: [] };
+    b.split("\n").forEach(line => {
+      line = line.trim(); let m;
+      if(m = line.match(/^img:\s*(.+)$/i)) q.img = m[1].trim();
+      else if(m = line.match(/^([+\-])\s*(.+)$/)){ if(m[1] === "+") q.c.push(q.a.length); q.a.push(m[2].trim()); }
+      else if(!q.a.length) q.q += (q.q ? " " : "") + line;
+      else throw new Error("Питання №" + (i + 1) + ": рядок «" + line.slice(0, 40) + "» не схожий на варіант (має починатись з + або -).");
+    });
+    if(!q.q) throw new Error("Питання №" + (i + 1) + ": немає тексту питання.");
+    if(q.a.length < 2) throw new Error("Питання №" + (i + 1) + ": потрібно щонайменше 2 варіанти.");
+    if(!q.c.length) throw new Error("Питання №" + (i + 1) + " («" + q.q.slice(0, 40) + "…»): не позначено правильну відповідь (+).");
+    return q;
+  });
+}
+function serializeQ(Q){
+  return Q.map(q => {
+    const c = (q.c || q.correct || []).map(x => typeof x === "string" ? "ABCDEFGH".indexOf(x.toUpperCase()) : x);
+    return [q.q, q.img ? "img: " + q.img : null, ...q.a.map((t, i) => (c.includes(i) ? "+ " : "- ") + t)].filter(Boolean).join("\n");
+  }).join("\n\n");
+}
+$("qtext").oninput = () => { try{ const Q = parseQ($("qtext").value); $("cnt").textContent = "Питань: " + Q.length + " (з кількома відповідями: " + Q.filter(x => x.c.length > 1).length + ", з картинками: " + Q.filter(x => x.img).length + ")"; }catch(e){ $("cnt").textContent = "⚠ " + e.message; } };
+
+/* ---------- відкриття / створення ---------- */
+async function openTest(t){
+  cur = t; $("msg2").className = "msg hidden";
+  $("edCard").classList.remove("hidden");
+  const isNew = !t.file;
+  $("edTitle").textContent = isNew ? "Новий тест" : "Редагування: " + t.title;
+  $("f_title").value = t.title || ""; $("f_icon").value = t.icon || ""; $("f_desc").value = t.desc || "";
+  $("f_id").value = t.id || ""; $("f_id").disabled = !isNew;
+  $("f_min").value = t.minutes || 30; $("f_cnt").value = t.questions || 20; $("f_att").value = t.attempts || 3; $("f_sub").value = t.subtitle || "";
+  $("f_ready").checked = isNew ? true : !!t.ready;
+  $("qtext").value = "";
+  if(!isNew){
+    try{
+      const f = await getFile(t.file);
+      const m = f && f.text.match(/const CONFIG = (\{[\s\S]*?\});\s*const Q = (\[[\s\S]*?\]);\s*<\/script>/);
+      if(!m) throw new Error("не вдалося прочитати " + t.file);
+      const C = JSON.parse(m[1]); $("f_sub").value = C.subtitle || ""; $("f_cnt").value = C.questionCount || t.questions;
+      $("qtext").value = serializeQ(JSON.parse(m[2]));
+    }catch(e){ show("msg2", "Помилка завантаження тесту: " + e.message, false); }
+  }
+  $("qtext").oninput(); $("edCard").scrollIntoView({ behavior: "smooth" });
+}
+$("newBtn").onclick = () => openTest({});
+$("cancel").onclick = () => $("edCard").classList.add("hidden");
+
+/* ---------- картинки ---------- */
+$("imgBtn").onclick = async () => {
+  const f = $("imgFile").files[0]; if(!f){ show("msg2", "Спочатку оберіть файл картинки.", false); return; }
+  if(f.size > 900000){ show("msg2", "Файл завеликий (понад 900 КБ). Зменште картинку.", false); return; }
+  const name = "img/" + f.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "_");
+  try{
+    const b64 = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = no; r.readAsDataURL(f); });
+    const ex = await api(name);
+    await putFile(name, b64, ex && ex.sha, "Картинка " + name, true);
+    const ta = $("qtext"); ta.setRangeText("img: " + name + "\n", ta.selectionStart, ta.selectionStart, "end"); ta.oninput();
+    show("msg2", "Завантажено: " + name + ". Рядок «img: …» вставлено в позицію курсора — перенесіть його під потрібне питання.", true);
+  }catch(e){ show("msg2", "Не вдалося завантажити картинку: " + e.message, false); }
+};
+
+/* ---------- збереження ---------- */
+$("saveBtn").onclick = async () => {
+  $("saveBtn").disabled = true;
+  try{
+    const isNew = !cur.file;
+    const title = $("f_title").value.trim(), id = $("f_id").value.trim();
+    if(!title) throw new Error("Введіть назву тесту.");
+    if(!/^[a-z0-9_]+$/.test(id)) throw new Error("Ідентифікатор: лише малі латинські літери, цифри та _.");
+    const Q = parseQ($("qtext").value);
+    if(!Q.length) throw new Error("Додайте хоча б одне питання.");
+    const cnt = Math.max(1, Math.min(Number($("f_cnt").value) || Q.length, Q.length));
+    if(isNew && manifest.tests.some(t => t.id === id)) throw new Error("Тест з таким ідентифікатором уже є.");
+
+    const tpl = await getFile("test-template.html");
+    if(!tpl) throw new Error("У репозиторії немає файлу test-template.html — завантажте його в корінь.");
+    const C = { testId: id, title: "Тест: " + title, subtitle: $("f_sub").value.trim(), icon: $("f_icon").value.trim() || "📝", questionCount: cnt, minutes: Number($("f_min").value) || 30, maxAttempts: Number($("f_att").value) || 3, maxLeaves: 3 };
+    const block = "const CONFIG = " + JSON.stringify(C, null, 1) + ";\n\nconst Q = " + JSON.stringify(Q, null, 1) + ";\n<" + "/script>";
+    const html = tpl.text.replace(/const CONFIG = \{[\s\S]*?<\/script>/, () => block);
+    if(html === tpl.text) throw new Error("Не вдалося підставити питання в шаблон.");
+
+    const file = cur.file || ("test-" + id + ".html");
+    const old = await getFile(file);
+    await putFile(file, html, old && old.sha, (isNew ? "Новий тест: " : "Оновлено тест: ") + title);
+
+    const mf = await getFile("tests.json");
+    manifest = mf ? JSON.parse(mf.text) : { tests: [] };
+    const entry = { id, file, title, icon: C.icon, desc: $("f_desc").value.trim(), subtitle: C.subtitle, questions: cnt, minutes: C.minutes, attempts: C.maxAttempts, ready: $("f_ready").checked };
+    const idx = manifest.tests.findIndex(t => (t.id && t.id === id) || (!t.file && cur.title && t.title === cur.title));
+    if(idx >= 0) manifest.tests[idx] = entry; else manifest.tests.push(entry);
+    await putFile("tests.json", JSON.stringify(manifest, null, 1) + "\n", mf && mf.sha, "Оновлено список тестів");
+
+    cur = entry; renderList();
+    show("msg2", "✅ Збережено: " + file + " (питань у банку: " + Q.length + ", у спробі: " + cnt + ").\nGitHub Pages оновить сайт приблизно за хвилину.", true);
+  }catch(e){ show("msg2", e.message, false); }
+  $("saveBtn").disabled = false;
+};
+</script>
+</body></html>
