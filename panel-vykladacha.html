@@ -42,6 +42,9 @@ tr:hover td{background:#f8fafc}
 .danger-buttons{display:flex;gap:10px;flex-wrap:wrap}
 .danger-btn{background:#dc2626}.danger-btn:hover{background:#b91c1c}
 .danger-all{background:#991b1b}.danger-all:hover{background:#7f1d1d}
+th[data-k]{cursor:pointer;user-select:none;white-space:nowrap}th[data-k]:hover{background:#eef2f7}
+.opts{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.opts label{display:flex;align-items:center;gap:8px;font-weight:600;margin:0}.opts input{width:auto}
 .empty,.loading{padding:30px;text-align:center;color:#64748b}
 @media(max-width:900px){.controls{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.controls,.stats{grid-template-columns:1fr}header h1{font-size:20px}}
@@ -51,7 +54,7 @@ tr:hover td{background:#f8fafc}
 
 <header><div class="header-inner">
   <h1>Панель викладача</h1>
-  <div style="display:flex;gap:10px;flex-wrap:wrap"><a href="index.html" style="background:#2c5282;color:#fff;text-decoration:none;border-radius:8px;padding:11px 16px;font-weight:700">🏠 Головне меню</a>
+  <div style="display:flex;gap:10px;flex-wrap:wrap"><a href="editor.html" style="background:#2c5282;color:#fff;text-decoration:none;border-radius:8px;padding:11px 16px;font-weight:700">🛠 Редактор тестів</a><a href="index.html" style="background:#2c5282;color:#fff;text-decoration:none;border-radius:8px;padding:11px 16px;font-weight:700">🏠 Головне меню</a>
   <button id="logoutBtn" class="logout hidden">Вийти</button></div>
 </div></header>
 
@@ -85,6 +88,14 @@ tr:hover td{background:#f8fafc}
     <button id="exportBtn" class="secondary">📥 CSV</button>
   </div>
 
+  <div class="opts">
+    <label><input type="checkbox" id="bestOnly"> Лише найкраща спроба кожного учня (з найвищим балом)</label>
+  </div>
+  <div class="opts">
+    <button id="newTestBtn" class="secondary">➕ Створити тест</button>
+    <button id="editTestBtn" class="secondary">✏️ Редагувати вибраний тест</button>
+  </div>
+
   <div class="danger-actions">
     <h3>Керування результатами</h3>
     <p>Видалення результатів є незворотною операцією. Перед видаленням буде потрібне додаткове підтвердження.</p>
@@ -99,7 +110,7 @@ tr:hover td{background:#f8fafc}
 <div class="card">
   <h2>Статистика</h2>
   <div class="stats">
-    <div class="stat"><div class="stat-title">Усього спроб</div><div id="statTotal" class="stat-value">0</div></div>
+    <div class="stat"><div class="stat-title" id="statTotalTitle">Усього спроб</div><div id="statTotal" class="stat-value">0</div></div>
     <div class="stat"><div class="stat-title">Завершено</div><div id="statCompleted" class="stat-value">0</div></div>
     <div class="stat"><div class="stat-title">Перервано</div><div id="statInterrupted" class="stat-value">0</div></div>
     <div class="stat"><div class="stat-title">Середній результат</div><div id="statAverage" class="stat-value">0%</div></div>
@@ -247,12 +258,51 @@ async function loadResults(){
   }
 }
 
+let sortKey = "started_at", sortDir = -1;
+
+/* Для кожного учня (за кодом) — спроба з найвищим балом; при рівних балах — пізніша */
+function bestOf(rows){
+  const by = {};
+  rows.forEach(r => { (by[r.student_code] = by[r.student_code] || []).push(r); });
+  return Object.values(by).map(list => {
+    const done = list.filter(r => r.status === "completed" && hasScore(r));
+    const pool = done.length ? done : list;
+    const t = r => new Date(r.finished_at || r.started_at || 0).getTime();
+    const best = pool.reduce((a, b) => {
+      if(done.length && Number(b.score) !== Number(a.score)) return Number(b.score) > Number(a.score) ? b : a;
+      return t(b) > t(a) ? b : a;
+    });
+    return Object.assign({}, best, { _total: list.length });
+  });
+}
+
+function sortValue(r, k){
+  if(k === "score") return hasScore(r) ? Number(r.score) / (calcMax(r) || 1) : null;
+  if(k === "grade"){ const g = calcGrade(r); return g === null ? null : Number(g); }
+  if(k === "attempt_number") return r.attempt_number == null ? null : Number(r.attempt_number);
+  if(k === "started_at" || k === "finished_at") return r[k] ? new Date(r[k]).getTime() : null;
+  return String(r[k] || "").toLowerCase();
+}
+function sortRows(rows){
+  const nm = r => String(r.student_name || "");
+  return [...rows].sort((a, b) => {
+    const x = sortValue(a, sortKey), y = sortValue(b, sortKey);
+    if(x === null && y === null) return 0;
+    if(x === null) return 1;
+    if(y === null) return -1;
+    const c = typeof x === "string" ? x.localeCompare(y, "uk") : x - y;
+    return (c * sortDir) || nm(a).localeCompare(nm(b), "uk");
+  });
+}
+
+/* пошук → найкраща спроба (за бажанням) → сортування */
 function getFilteredResults(){
   const q = $("searchInput").value.trim().toLowerCase();
-  if(!q) return allResults;
-  return allResults.filter(r =>
+  let rows = !q ? allResults : allResults.filter(r =>
     String(r.student_code || "").toLowerCase().includes(q) ||
     String(r.student_name || "").toLowerCase().includes(q));
+  if($("bestOnly").checked) rows = bestOf(rows);
+  return sortRows(rows);
 }
 
 function renderResults(){
@@ -260,10 +310,11 @@ function renderResults(){
   updateStats(rows);
   if(!rows.length){ $("tableContainer").innerHTML = '<div class="empty">Результатів не знайдено.</div>'; return; }
 
-  const sorted = [...rows].sort((a, b) => new Date(b.started_at || 0) - new Date(a.started_at || 0));
-  let html = '<table><thead><tr><th>№</th><th>Код</th><th>ПІБ</th><th>Група</th><th>Спроба</th><th>Статус</th><th>Бал</th><th>Оцінка</th><th>Початок</th><th>Завершення</th></tr></thead><tbody>';
+  const cols = [["student_code","Код"],["student_name","ПІБ"],["student_group","Група"],["attempt_number","Спроба"],["status","Статус"],["score","Бал"],["grade","Оцінка"],["started_at","Початок"],["finished_at","Завершення"]];
+  let html = "<table><thead><tr><th>№</th>" + cols.map(([k, l]) =>
+    '<th data-k="' + k + '" title="Сортувати">' + l + (sortKey === k ? (sortDir > 0 ? " ▲" : " ▼") : "") + "</th>").join("") + "</tr></thead><tbody>";
 
-  sorted.forEach((row, i) => {
+  rows.forEach((row, i) => {
     const status = String(row.status || "");
     let st = escapeHtml(status);
     if(status === "completed") st = '<span class="badge badge-completed">Завершено</span>';
@@ -273,24 +324,21 @@ function renderResults(){
     const mx = calcMax(row);
     const score = hasScore(row) ? row.score + " / " + (mx || "?") : "—";
     const g = calcGrade(row);
+    const att = row._total ? "№" + (row.attempt_number ?? "—") + " (з " + row._total + ")" : (row.attempt_number ?? "—");
 
-    html += "<tr>" +
-      "<td>" + (i + 1) + "</td>" +
+    html += "<tr><td>" + (i + 1) + "</td>" +
       "<td>" + escapeHtml(row.student_code || "") + "</td>" +
       "<td>" + escapeHtml(row.student_name || "") + "</td>" +
       "<td>" + escapeHtml(row.student_group || "—") + "</td>" +
-      "<td>" + (row.attempt_number ?? "—") + "</td>" +
-      "<td>" + st + "</td>" +
-      "<td>" + score + "</td>" +
+      "<td>" + att + "</td><td>" + st + "</td><td>" + score + "</td>" +
       "<td><b>" + (g !== null ? g : "—") + "</b></td>" +
-      "<td>" + formatDate(row.started_at) + "</td>" +
-      "<td>" + formatDate(row.finished_at) + "</td></tr>";
+      "<td>" + formatDate(row.started_at) + "</td><td>" + formatDate(row.finished_at) + "</td></tr>";
   });
-
   $("tableContainer").innerHTML = html + "</tbody></table>";
 }
 
 function updateStats(rows){
+  $("statTotalTitle").textContent = $("bestOnly").checked ? "Учнів" : "Усього спроб";
   const done = rows.filter(r => r.status === "completed");
   const scored = done.filter(r => hasScore(r) && calcMax(r));
   let avg = 0;
@@ -380,6 +428,15 @@ $("testSelect").addEventListener("change", () => { $("searchInput").value = ""; 
 $("searchInput").addEventListener("input", renderResults);
 $("refreshBtn").addEventListener("click", loadResults);
 $("exportBtn").addEventListener("click", exportCSV);
+$("bestOnly").addEventListener("change", renderResults);
+$("tableContainer").addEventListener("click", e => {
+  const th = e.target.closest("th[data-k]"); if(!th) return;
+  const k = th.dataset.k;
+  if(sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = (k === "score" || k === "grade" || k === "started_at" || k === "finished_at") ? -1 : 1; }
+  renderResults();
+});
+$("newTestBtn").addEventListener("click", () => { location.href = "editor.html?new=1"; });
+$("editTestBtn").addEventListener("click", () => { location.href = "editor.html?edit=" + encodeURIComponent($("testSelect").value); });
 $("clearTestBtn").addEventListener("click", clearSelectedTest);
 $("clearAllBtn").addEventListener("click", clearAllTests);
 
