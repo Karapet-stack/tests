@@ -42,6 +42,7 @@ tr:hover td{background:#f8fafc}
 .danger-buttons{display:flex;gap:10px;flex-wrap:wrap}
 .danger-btn{background:#dc2626}.danger-btn:hover{background:#b91c1c}
 .danger-all{background:#991b1b}.danger-all:hover{background:#7f1d1d}
+.mini{padding:5px 8px;font-size:12px;margin:0 2px 2px 0}
 th[data-k]{cursor:pointer;user-select:none;white-space:nowrap}th[data-k]:hover{background:#eef2f7}
 .opts{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .opts label{display:flex;align-items:center;gap:8px;font-weight:600;margin:0}.opts input{width:auto}
@@ -259,6 +260,7 @@ async function loadResults(){
 }
 
 let sortKey = "started_at", sortDir = -1;
+let viewRows = [];
 
 /* Для кожного учня (за кодом) — спроба з найвищим балом; при рівних балах — пізніша */
 function bestOf(rows){
@@ -307,12 +309,13 @@ function getFilteredResults(){
 
 function renderResults(){
   const rows = getFilteredResults();
+  viewRows = rows;
   updateStats(rows);
   if(!rows.length){ $("tableContainer").innerHTML = '<div class="empty">Результатів не знайдено.</div>'; return; }
 
   const cols = [["student_code","Код"],["student_name","ПІБ"],["student_group","Група"],["attempt_number","Спроба"],["status","Статус"],["score","Бал"],["grade","Оцінка"],["started_at","Початок"],["finished_at","Завершення"]];
   let html = "<table><thead><tr><th>№</th>" + cols.map(([k, l]) =>
-    '<th data-k="' + k + '" title="Сортувати">' + l + (sortKey === k ? (sortDir > 0 ? " ▲" : " ▼") : "") + "</th>").join("") + "</tr></thead><tbody>";
+    '<th data-k="' + k + '" title="Сортувати">' + l + (sortKey === k ? (sortDir > 0 ? " ▲" : " ▼") : "") + "</th>").join("") + "<th></th></tr></thead><tbody>";
 
   rows.forEach((row, i) => {
     const status = String(row.status || "");
@@ -332,7 +335,8 @@ function renderResults(){
       "<td>" + escapeHtml(row.student_group || "—") + "</td>" +
       "<td>" + att + "</td><td>" + st + "</td><td>" + score + "</td>" +
       "<td><b>" + (g !== null ? g : "—") + "</b></td>" +
-      "<td>" + formatDate(row.started_at) + "</td><td>" + formatDate(row.finished_at) + "</td></tr>";
+      "<td>" + formatDate(row.started_at) + "</td><td>" + formatDate(row.finished_at) + "</td>" +
+      '<td><button class="mini danger-btn" data-del="attempt" data-i="' + i + '" title="Видалити лише цю спробу">🗑 спроба</button><button class="mini danger-btn danger-all" data-del="student" data-i="' + i + '" title="Видалити всі спроби цього учня в цьому тесті">🗑 учень</button></td></tr>';
   });
   $("tableContainer").innerHTML = html + "</tbody></table>";
 }
@@ -434,6 +438,30 @@ $("tableContainer").addEventListener("click", e => {
   const k = th.dataset.k;
   if(sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = (k === "score" || k === "grade" || k === "started_at" || k === "finished_at") ? -1 : 1; }
   renderResults();
+});
+$("tableContainer").addEventListener("click", async e => {
+  const btn = e.target.closest("button[data-del]"); if(!btn) return;
+  const row = viewRows[Number(btn.dataset.i)]; if(!row) return;
+  const student = btn.dataset.del === "student";
+  const testId = $("testSelect").value;
+  const who = (row.student_name || "") + " (" + (row.student_code || "") + ")";
+  const text = student
+    ? "Видалити ВСІ спроби учня " + who + " у тесті «" + (TEST_NAMES[testId] || testId) + "»?\n\nУчень зможе пройти тест заново.\nЦю дію неможливо скасувати."
+    : "Видалити цю спробу (№" + (row.attempt_number ?? "?") + ") учня " + who + "?\n\nЦю дію неможливо скасувати.";
+  if(!confirm(text)) return;
+  if(!student && (row.id === null || row.id === undefined)){ showDeleteMessage("Сервер не повернув id спроби — оновіть функцію get_all_test_attempts (див. SQL).", false); return; }
+  btn.disabled = true;
+  try{
+    const r = student
+      ? await supabaseRPC("delete_student_attempts", { p_test_id: testId, p_student_code: row.student_code })
+      : await supabaseRPC("delete_attempt", { p_attempt_id: Number(row.id) });
+    showDeleteMessage("Готово. Видалено записів: " + (r?.deleted ?? 0), true);
+    await loadResults();
+  }catch(err){
+    showDeleteMessage("Не вдалося видалити: " + (err.message || String(err)) + ". Перевірте, що SQL-функції видалення створені.", false);
+    btn.disabled = false;
+  }
+  $("deleteMessage").scrollIntoView({ block: "center" });
 });
 $("newTestBtn").addEventListener("click", () => { location.href = "editor.html?new=1"; });
 $("editTestBtn").addEventListener("click", () => { location.href = "editor.html?edit=" + encodeURIComponent($("testSelect").value); });
