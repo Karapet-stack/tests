@@ -31,7 +31,7 @@ pre{background:#f1f5f9;padding:10px;border-radius:8px;font-size:13px;overflow:au
 </head>
 <body><div class="wrap">
 <h1>Редактор тестів</h1>
-<div class="sub">Створює й змінює тести прямо в репозиторії GitHub та оновлює головне меню. <a href="index.html">← Меню</a></div>
+<div class="sub">Створює й змінює тести прямо в репозиторії GitHub та оновлює головне меню. <a href="index.html">← Меню</a> · <a href="panel-vykladacha.html">Панель викладача</a></div>
 
 <div class="card">
   <h2>1. Підключення до GitHub</h2>
@@ -120,6 +120,7 @@ $("connect").onclick = async () => {
     manifest = f ? JSON.parse(f.text) : { tests: [] };
     show("msg1", f ? "Підключено. Тестів у списку: " + manifest.tests.length : "Підключено. Файлу tests.json ще немає — він буде створений при першому збереженні.", true);
     renderList(); $("listCard").classList.remove("hidden");
+    handleWant();
   }catch(e){ show("msg1", "Не вдалося підключитись: " + e.message, false); }
 };
 function renderList(){
@@ -187,6 +188,18 @@ function serializeQ(Q){
 }
 $("qtext").oninput = () => { try{ const Q = parseQ($("qtext").value); $("cnt").textContent = "Питань: " + Q.length + " (з кількома відповідями: " + Q.filter(x => x.c.length > 1).length + ", з картинками: " + Q.filter(x => x.img).length + ")"; }catch(e){ $("cnt").textContent = "⚠ " + e.message; } };
 
+/* ---------- перехід із панелі викладача: ?new=1 або ?edit=ідентифікатор ---------- */
+const qs = new URLSearchParams(location.search);
+let want = qs.get("new") ? { n: 1 } : qs.get("edit") ? { e: qs.get("edit") } : null;
+function handleWant(){
+  if(!want) return;
+  const w = want; want = null;
+  if(w.n) return openTest({});
+  const t = manifest.tests.find(x => x.id === w.e);
+  if(t && t.file) openTest(t);
+  else show("msg1", "Тест «" + w.e + "» не знайдено в tests.json. Оберіть його зі списку нижче або створіть новий.", false);
+}
+
 /* ---------- відкриття / створення ---------- */
 async function openTest(t){
   cur = t; $("msg2").className = "msg hidden";
@@ -210,6 +223,10 @@ async function openTest(t){
   $("qtext").oninput(); $("edCard").scrollIntoView({ behavior: "smooth" });
 }
 $("newBtn").onclick = () => openTest({});
+if(want){
+  if(saved.token && saved.owner && saved.repo) $("connect").click();
+  else show("msg1", "Підключіться до GitHub (власник, репозиторій, токен) — і потрібний тест відкриється автоматично.", true);
+}
 $("cancel").onclick = () => $("edCard").classList.add("hidden");
 
 /* ---------- картинки ---------- */
