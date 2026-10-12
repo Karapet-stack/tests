@@ -30,8 +30,8 @@
    "title": "Креслення",
    "icon": "📐",
    "desc": "Лінії, розміри, види, розрізи, масштаби",
-   "subtitle": "",
-   "questions": 32,
+   "subtitle": "Перевірка знань з креслення",
+   "questions": 30,
    "minutes": 30,
    "attempts": 3,
    "ready": true
