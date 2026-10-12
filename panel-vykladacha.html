@@ -43,6 +43,16 @@ tr:hover td{background:#f8fafc}
 .danger-btn{background:#dc2626}.danger-btn:hover{background:#b91c1c}
 .danger-all{background:#991b1b}.danger-all:hover{background:#7f1d1d}
 .grp td{background:#eef2f7!important;font-weight:700;color:#334155}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}
+.modal-box{background:#fff;border-radius:14px;max-width:920px;width:100%;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.ans{border:1px solid #e2e8f0;border-left:5px solid #16a34a;border-radius:8px;padding:10px 12px;margin:8px 0;line-height:1.5}
+.ans.bad{border-left-color:#dc2626;background:#fef2f2}
+.onlyw .ans.okq{display:none}
+.good{color:#166534;font-weight:700}.badc{color:#991b1b;font-weight:700}
+details{border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin:8px 0}summary{cursor:pointer;font-weight:700;line-height:1.5}
+.pill{display:inline-block;background:#fee2e2;color:#991b1b;border-radius:20px;padding:2px 8px;font-size:12px;font-weight:700;margin-right:6px}
+.tabs{display:flex;gap:8px;margin:10px 0}.tabs button.on{background:#173b63}.tabs button:not(.on){background:#64748b}
 .mini{padding:5px 8px;font-size:12px;margin:0 2px 2px 0}
 th[data-k]{cursor:pointer;user-select:none;white-space:nowrap}th[data-k]:hover{background:#eef2f7}
 .opts{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -95,6 +105,7 @@ th[data-k]{cursor:pointer;user-select:none;white-space:nowrap}th[data-k]:hover{b
     <label><input type="checkbox" id="bestOnly"> Лише найкраща спроба кожного учня (з найвищим балом)</label>
   </div>
   <div class="opts">
+    <button id="analyzeBtn" class="secondary">📊 Аналіз відповідей (поточна вибірка)</button>
     <button id="newTestBtn" class="secondary">➕ Створити тест</button>
     <button id="editTestBtn" class="secondary">✏️ Редагувати вибраний тест</button>
   </div>
@@ -128,6 +139,11 @@ th[data-k]{cursor:pointer;user-select:none;white-space:nowrap}th[data-k]:hover{b
 
 </section>
 </div>
+
+<div id="modal" class="modal hidden"><div class="modal-box">
+  <div class="mhead"><h3 id="modalTitle" style="margin:0">Відповіді</h3><button id="modalClose" class="secondary">Закрити ✕</button></div>
+  <div id="modalBody"></div>
+</div></div>
 
 <script>
 const SUPABASE_URL = "https://egovkavyxtcztisropsf.supabase.co";
@@ -357,7 +373,7 @@ function renderResults(){
       "<td>" + att + "</td><td>" + st + "</td><td>" + score + "</td>" +
       "<td><b>" + (g !== null ? g : "—") + "</b></td>" +
       "<td>" + formatDate(row.started_at) + "</td><td>" + formatDate(row.finished_at) + "</td>" +
-      '<td><button class="mini danger-btn" data-del="attempt" data-i="' + i + '" title="Видалити лише цю спробу">🗑 спроба</button><button class="mini danger-btn danger-all" data-del="student" data-i="' + i + '" title="Видалити всі спроби цього учня в цьому тесті">🗑 учень</button></td></tr>';
+      '<td><button class="mini" data-ans="' + i + '" title="Що обрав учень і де помилився">📋 відповіді</button><button class="mini danger-btn" data-del="attempt" data-i="' + i + '" title="Видалити лише цю спробу">🗑 спроба</button><button class="mini danger-btn danger-all" data-del="student" data-i="' + i + '" title="Видалити всі спроби цього учня в цьому тесті">🗑 учень</button></td></tr>';
   });
   $("tableContainer").innerHTML = html + "</tbody></table>";
 }
@@ -485,6 +501,87 @@ $("tableContainer").addEventListener("click", async e => {
   }
   $("deleteMessage").scrollIntoView({ block: "center" });
 });
+/* ---------- відповіді учнів: що обрав і де помилився ---------- */
+const NOANS = '<div class="warning">Для цієї спроби відповіді не збережені (тест пройдено до оновлення або не завершено).</div>';
+function openModal(title, html){ $("modalTitle").textContent = title; $("modalBody").innerHTML = html; $("modal").classList.remove("hidden"); }
+$("modalClose").addEventListener("click", () => $("modal").classList.add("hidden"));
+document.addEventListener("keydown", e => { if(e.key === "Escape") $("modal").classList.add("hidden"); });
+
+async function fetchAnswers(ids){
+  const d = await supabaseRPC("get_attempts_answers", { p_ids: ids });
+  const m = {}; (d || []).forEach(r => { m[r.id] = r.answers; }); return m;
+}
+const esc = escapeHtml;
+function wrongHtml(a){
+  return '<div>Обрано: <span class="badc">' + (a.ch && a.ch.length ? a.ch.map(esc).join(" + ") : "— без відповіді") + '</span></div>' +
+         '<div>Правильно: <span class="good">' + (a.co || []).map(esc).join(" + ") + "</span></div>";
+}
+function who(r){ return esc(r.student_name || "") + " (" + esc(r.student_group || "—") + ", " + esc(r.student_code || "") + ")"; }
+function scoreOf(r){ const mx = calcMax(r); return hasScore(r) ? r.score + " / " + (mx || "?") + " · оцінка " + (calcGrade(r) ?? "—") : "—"; }
+const loadErr = e => '<div class="error">Не вдалося завантажити: ' + esc(e.message || String(e)) + '. Перевірте, що SQL-функцію get_attempts_answers створено.</div>';
+
+async function showAttempt(row){
+  openModal("Відповіді учня", '<div class="loading">Завантаження…</div>');
+  try{
+    const m = await fetchAnswers([Number(row.id)]), ans = m[row.id];
+    let h = "<p><b>" + who(row) + "</b><br>Спроба №" + (row.attempt_number ?? "?") + " · " + esc(scoreOf(row)) + "</p>";
+    if(!ans) h += NOANS;
+    else{
+      const bad = ans.filter(a => !a.ok).length;
+      h += '<label style="font-weight:600"><input type="checkbox" style="width:auto;margin-right:6px" onchange="document.getElementById(\'modalBody\').classList.toggle(\'onlyw\',this.checked)">Показати лише помилки (' + bad + " з " + ans.length + ")</label>";
+      h += ans.map((a, i) => '<div class="ans ' + (a.ok ? "okq" : "bad") + '"><b>' + (a.ok ? "✅" : "❌") + " " + (i + 1) + ". " + esc(a.q) + "</b>" + (a.ok ? "" : wrongHtml(a)) + "</div>").join("");
+    }
+    $("modalBody").classList.remove("onlyw"); openModal("Відповіді учня", h);
+  }catch(e){ openModal("Відповіді учня", loadErr(e)); }
+}
+
+async function analyze(){
+  const rows = viewRows.filter(r => r.status === "completed" && r.id !== null && r.id !== undefined);
+  if(!rows.length){ alert("У поточній вибірці немає завершених спроб."); return; }
+  const g = $("groupSelect").value || "усі групи", tn = TEST_NAMES[$("testSelect").value] || "";
+  const title = "Аналіз: " + tn + " · " + g;
+  openModal(title, '<div class="loading">Завантаження відповідей…</div>');
+  try{
+    const m = await fetchAnswers(rows.map(r => Number(r.id)));
+    const withA = rows.filter(r => Array.isArray(m[r.id]));
+    if(!withA.length){ openModal(title, NOANS); return; }
+    const qs = {};
+    withA.forEach(r => m[r.id].forEach(a => {
+      const o = qs[a.q] = qs[a.q] || { n: 0, w: 0, opts: {}, who: [] };
+      o.n++;
+      if(!a.ok){ o.w++; const k = (a.ch && a.ch.length) ? a.ch.join(" + ") : "— без відповіді"; o.opts[k] = (o.opts[k] || 0) + 1; o.who.push({ r, k, co: a.co }); }
+    }));
+    const byQ = Object.entries(qs).sort((a, b) => (b[1].w / b[1].n) - (a[1].w / a[1].n) || b[1].w - a[1].w).map(([q, o]) => {
+      const pct = Math.round(o.w / o.n * 100);
+      const opts = Object.entries(o.opts).sort((a, b) => b[1] - a[1]).map(([k, c]) => "«" + esc(k) + "» — " + c).join("<br>");
+      const co = o.who.length ? (o.who[0].co || []).map(esc).join(" + ") : "";
+      return "<details><summary>" + (o.w ? '<span class="pill">' + pct + "% помилок</span>" : "✅ ") + esc(q) + " <small>(" + o.w + " з " + o.n + ")</small></summary>" +
+        (o.w ? '<p>Правильно: <span class="good">' + co + "</span></p><p><b>Що обирали:</b><br>" + opts + "</p><p><b>Хто помилився:</b><br>" +
+          o.who.map(x => who(x.r) + ' — <span class="badc">' + esc(x.k) + "</span>").join("<br>") + "</p>" : "<p>Усі відповіли правильно.</p>") + "</details>";
+    }).join("");
+    const sorted = [...withA].sort((a, b) => String(a.student_group || "").localeCompare(String(b.student_group || ""), "uk") || String(a.student_name || "").localeCompare(String(b.student_name || ""), "uk"));
+    const byS = sorted.map(r => {
+      const bad = m[r.id].filter(a => !a.ok);
+      return "<details><summary>" + who(r) + " — " + esc(scoreOf(r)) + " · помилок: " + bad.length + "</summary>" +
+        (bad.length ? bad.map(a => '<div class="ans bad"><b>❌ ' + esc(a.q) + "</b>" + wrongHtml(a) + "</div>").join("") : "<p>Помилок немає 🎉</p>") + "</details>";
+    }).join("");
+    const note = "<p class='hint' style='color:#64748b'>Враховано спроб: " + withA.length + (rows.length > withA.length ? " (ще " + (rows.length - withA.length) + " без збережених відповідей)" : "") +
+      ". Вибірка залежить від фільтрів над таблицею (група, пошук, «лише найкраща спроба»).</p>";
+    openModal(title, note + '<div class="tabs"><button class="on" data-tab="q">По питаннях</button><button data-tab="s">По учнях</button></div>' +
+      '<div id="tabQ">' + byQ + '</div><div id="tabS" class="hidden">' + byS + "</div>");
+  }catch(e){ openModal(title, loadErr(e)); }
+}
+$("analyzeBtn").addEventListener("click", analyze);
+$("modalBody").addEventListener("click", e => {
+  const b = e.target.closest("button[data-tab]"); if(!b) return;
+  document.querySelectorAll("#modalBody .tabs button").forEach(x => x.classList.toggle("on", x === b));
+  $("tabQ").classList.toggle("hidden", b.dataset.tab !== "q"); $("tabS").classList.toggle("hidden", b.dataset.tab !== "s");
+});
+$("tableContainer").addEventListener("click", e => {
+  const b = e.target.closest("button[data-ans]"); if(!b) return;
+  const row = viewRows[Number(b.dataset.ans)]; if(row) showAttempt(row);
+});
+
 $("newTestBtn").addEventListener("click", () => { location.href = "editor.html?new=1"; });
 $("editTestBtn").addEventListener("click", () => { location.href = "editor.html?edit=" + encodeURIComponent($("testSelect").value); });
 $("clearTestBtn").addEventListener("click", clearSelectedTest);
