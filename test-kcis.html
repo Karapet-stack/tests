@@ -171,14 +171,14 @@ h1{font-size:24px}.q-card{padding:18px}.q-text{font-size:18px}
 ===================================================================== -->
 <script>
 const CONFIG = {
- "testId": "kcis_2026",
- "title": "Тест: Засоби комп’ютерних інформаційних систем",
- "subtitle": "Підсумковий тест",
- "icon": "💻",
- "questionCount": 60,
- "minutes": 45,
- "maxAttempts": 3,
- "maxLeaves": 3
+  "testId": "kcis_2026",
+  "title": "Тест: Засоби комп’ютерних інформаційних систем",
+  "subtitle": "Підсумковий тест",
+  "icon": "💻",
+  "questionCount": 60,
+  "minutes": 30,
+  "maxAttempts": 3,
+  "maxLeaves": 3
 };
 
 const Q = [
@@ -873,24 +873,24 @@ const Q = [
   ]
  },
  {
-  "q": "Який інтерфейс використовується для підключення сучасних NVMe SSD безпосередньо до шин PCI Express?",
+  "q": "Яку характеристику монітора вимірюють у герцах (Гц)?",
   "a": [
-   "M.2",
-   "SATA",
-   "USB Type-A",
-   "VGA"
+   "Частоту оновлення зображення",
+   "Роздільну здатність",
+   "Яскравість",
+   "Діагональ екрана"
   ],
   "c": [
    0
   ]
  },
  {
-  "q": "Яка характеристика монітора визначає, скільки разів за секунду оновлюється зображення на екрані?",
+  "q": "Яких основних блоків потребує комп’ютер за принципом фон Неймана?",
   "a": [
-   "Частота оновлення",
-   "Роздільна здатність",
-   "Діагональ екрана",
-   "Час відгуку"
+   "Процесор, пам’ять, пристрої введення та виведення",
+   "Тільки процесор і монітор",
+   "Монітор, клавіатура та принтер",
+   "Тільки пам’ять і блок живлення"
   ],
   "c": [
    0
@@ -1080,6 +1080,15 @@ function calc(){
   });
   const n = state.questions.length, p = n ? ok / n : 0;
   return { correct: ok, wrong: n - ok, percent: p, grade: gradeOf(p) };
+}
+
+/* Відповіді для викладача: правильні — лише текст питання, хибні — що обрано й що було правильно */
+function buildAnswers(){
+  return state.questions.map((q, i) => {
+    const u = [...(state.answers[i] || [])].sort((a, b) => a - b), r = [...q.c].sort((a, b) => a - b);
+    if(u.length && JSON.stringify(u) === JSON.stringify(r)) return { q: q.q, ok: true };
+    return { q: q.q, ok: false, ch: u.map(k => q.a[k]), co: r.map(k => q.a[k]) };
+  });
 }
 
 /* ---------- екрани ---------- */
@@ -1317,6 +1326,7 @@ async function finish(reason){
   finishing = true;
   state.active = false; state.finished = true; state.reason = reason;
   state.result = calc(); state.saved = false;
+  state.detail = buildAnswers();
   save(); stopTimer();
   $("secOverlay").style.display = "none";
   showResult();                                     // спершу показуємо результат — тест закрито
@@ -1328,8 +1338,15 @@ async function sendResult(){
   const s = $("rSave"); s.textContent = "Результат зберігається..."; s.style.color = ""; $("retrySaveBtn").classList.add("hidden");
   try{
     const fb = { p_test_id: CONFIG.testId, p_attempt_id: Number(state.attemptId), p_score: state.result.correct };
-    try{ await rpc("finish_test_attempt", Object.assign({ p_max_score: state.questions.length }, fb)); }
-    catch(e){ if(/find the function|PGRST202/i.test(e.message)) await rpc("finish_test_attempt", fb); else throw e; }
+    const n = state.questions.length;
+    // від новішої версії функції на сервері до найстарішої — щоб бал зберігся в будь-якому разі
+    const tries = [Object.assign({ p_max_score: n, p_answers: state.detail || null }, fb), Object.assign({ p_max_score: n }, fb), fb];
+    let done = false, lastErr = null;
+    for(const body of tries){
+      try{ await rpc("finish_test_attempt", body); done = true; break; }
+      catch(e){ lastErr = e; if(!/find the function|PGRST202/i.test(e.message)) throw e; }
+    }
+    if(!done) throw lastErr;
     state.saved = true; save();
     s.textContent = "✅ Результат успішно збережено."; s.style.color = "#15803d";
   }catch(e){
