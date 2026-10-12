@@ -183,153 +183,373 @@ const CONFIG = {
 
 const Q = [
  {
-  "q": "Що таке веб-дизайн?",
+  "q": "На схемі показано блокову модель елемента. Що позначено цифрою 3?",
   "a": [
-   "Проєктування зовнішнього вигляду та структури вебсайту",
-   "Створення комп’ютерних комплектуючих",
-   "Налаштування операційної системи"
+   "Внутрішній відступ (padding)",
+   "Зовнішній відступ (margin)",
+   "Рамка (border)",
+   "Вміст елемента"
   ],
   "c": [
    0
-  ]
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%22130%22%20y%3D%2220%22%20width%3D%22340%22%20height%3D%22260%22%20fill%3D%22%23fde68a%22%20stroke%3D%22%23d97706%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%205%22/%3E%3Crect%20x%3D%22165%22%20y%3D%2255%22%20width%3D%22270%22%20height%3D%22190%22%20fill%3D%22%239ca3af%22%20stroke%3D%22%23374151%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%22185%22%20y%3D%2275%22%20width%3D%22230%22%20height%3D%22150%22%20fill%3D%22%23bbf7d0%22%20stroke%3D%22%2315803d%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22225%22%20y%3D%22110%22%20width%3D%22150%22%20height%3D%2280%22%20fill%3D%22%23bfdbfe%22%20stroke%3D%22%231d4ed8%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22240%22%20y%3D%22128%22%20width%3D%22120%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22240%22%20y%3D%22148%22%20width%3D%22120%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22240%22%20y%3D%22168%22%20width%3D%2280%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%2360a5fa%22/%3E%3Cline%20x1%3D%22545%22%20y1%3D%2260%22%20x2%3D%22452%22%20y2%3D%2260%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%2260%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%2266%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E1%3C/text%3E%3Cline%20x1%3D%22545%22%20y1%3D%22100%22%20x2%3D%22425%22%20y2%3D%22100%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%22100%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%22106%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E2%3C/text%3E%3Cline%20x1%3D%22545%22%20y1%3D%22140%22%20x2%3D%22395%22%20y2%3D%22140%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%22140%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%22146%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E3%3C/text%3E%3Cline%20x1%3D%22545%22%20y1%3D%22180%22%20x2%3D%22350%22%20y2%3D%22180%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%22180%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%22186%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E4%3C/text%3E%3C/svg%3E"
  },
  {
-  "q": "Яка мова використовується для створення структури вебсторінки?",
+  "q": "Яка CSS-властивість відповідає за область, позначену цифрою 1?",
   "a": [
-   "HTML",
-   "CSS",
-   "JavaScript",
-   "PHP"
+   "margin",
+   "padding",
+   "border",
+   "display"
   ],
   "c": [
    0
-  ]
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%22130%22%20y%3D%2220%22%20width%3D%22340%22%20height%3D%22260%22%20fill%3D%22%23fde68a%22%20stroke%3D%22%23d97706%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%205%22/%3E%3Crect%20x%3D%22165%22%20y%3D%2255%22%20width%3D%22270%22%20height%3D%22190%22%20fill%3D%22%239ca3af%22%20stroke%3D%22%23374151%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%22185%22%20y%3D%2275%22%20width%3D%22230%22%20height%3D%22150%22%20fill%3D%22%23bbf7d0%22%20stroke%3D%22%2315803d%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22225%22%20y%3D%22110%22%20width%3D%22150%22%20height%3D%2280%22%20fill%3D%22%23bfdbfe%22%20stroke%3D%22%231d4ed8%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22240%22%20y%3D%22128%22%20width%3D%22120%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22240%22%20y%3D%22148%22%20width%3D%22120%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22240%22%20y%3D%22168%22%20width%3D%2280%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%2360a5fa%22/%3E%3Cline%20x1%3D%22545%22%20y1%3D%2260%22%20x2%3D%22452%22%20y2%3D%2260%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%2260%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%2266%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E1%3C/text%3E%3Cline%20x1%3D%22545%22%20y1%3D%22100%22%20x2%3D%22425%22%20y2%3D%22100%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%22100%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%22106%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E2%3C/text%3E%3Cline%20x1%3D%22545%22%20y1%3D%22140%22%20x2%3D%22395%22%20y2%3D%22140%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%22140%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%22146%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E3%3C/text%3E%3Cline%20x1%3D%22545%22%20y1%3D%22180%22%20x2%3D%22350%22%20y2%3D%22180%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%22180%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%22186%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E4%3C/text%3E%3C/svg%3E"
  },
  {
-  "q": "Яка мова використовується для оформлення вебсторінки?",
+  "q": "Яка властивість задає товщину та колір області, позначеної цифрою 2?",
   "a": [
-   "CSS",
-   "HTML",
-   "SQL",
-   "Python"
+   "border",
+   "margin",
+   "padding",
+   "width"
   ],
   "c": [
    0
-  ]
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%22130%22%20y%3D%2220%22%20width%3D%22340%22%20height%3D%22260%22%20fill%3D%22%23fde68a%22%20stroke%3D%22%23d97706%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%228%205%22/%3E%3Crect%20x%3D%22165%22%20y%3D%2255%22%20width%3D%22270%22%20height%3D%22190%22%20fill%3D%22%239ca3af%22%20stroke%3D%22%23374151%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%22185%22%20y%3D%2275%22%20width%3D%22230%22%20height%3D%22150%22%20fill%3D%22%23bbf7d0%22%20stroke%3D%22%2315803d%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22225%22%20y%3D%22110%22%20width%3D%22150%22%20height%3D%2280%22%20fill%3D%22%23bfdbfe%22%20stroke%3D%22%231d4ed8%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22240%22%20y%3D%22128%22%20width%3D%22120%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22240%22%20y%3D%22148%22%20width%3D%22120%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22240%22%20y%3D%22168%22%20width%3D%2280%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%2360a5fa%22/%3E%3Cline%20x1%3D%22545%22%20y1%3D%2260%22%20x2%3D%22452%22%20y2%3D%2260%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%2260%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%2266%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E1%3C/text%3E%3Cline%20x1%3D%22545%22%20y1%3D%22100%22%20x2%3D%22425%22%20y2%3D%22100%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%22100%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%22106%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E2%3C/text%3E%3Cline%20x1%3D%22545%22%20y1%3D%22140%22%20x2%3D%22395%22%20y2%3D%22140%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%22140%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%22146%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E3%3C/text%3E%3Cline%20x1%3D%22545%22%20y1%3D%22180%22%20x2%3D%22350%22%20y2%3D%22180%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22545%22%20cy%3D%22180%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22545%22%20y%3D%22186%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E4%3C/text%3E%3C/svg%3E"
  },
  {
-  "q": "Яка мова використовується для додавання інтерактивності на вебсторінку?",
+  "q": "Що, найімовірніше, розташовано в області 2 на макеті сторінки?",
   "a": [
-   "JavaScript",
-   "HTML",
-   "CSS",
-   "SQL"
+   "Навігаційне меню",
+   "Нижня частина сайту з контактами",
+   "Основний вміст сторінки",
+   "Бічна панель із додатковою інформацією"
   ],
   "c": [
    0
-  ]
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2212%22%20width%3D%22320%22%20height%3D%2248%22%20fill%3D%22%23dbeafe%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%2228%22%20width%3D%2270%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2264%22%20width%3D%22320%22%20height%3D%2228%22%20fill%3D%22%23e0e7ff%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22214%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22274%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22334%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2296%22%20width%3D%2290%22%20height%3D%22150%22%20fill%3D%22%23fef3c7%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22110%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22130%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22150%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22170%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22190%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22210%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22234%22%20y%3D%2296%22%20width%3D%22226%22%20height%3D%22150%22%20fill%3D%22%23f3f4f6%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22110%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22130%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22150%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22170%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22190%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22210%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22140%22%20y%3D%22250%22%20width%3D%22320%22%20height%3D%2240%22%20fill%3D%22%23d1fae5%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%22266%22%20width%3D%22120%22%20height%3D%228%22%20rx%3D%223%22%20fill%3D%22%236ee7b7%22/%3E%3Cline%20x1%3D%22520%22%20y1%3D%2236%22%20x2%3D%22460%22%20y2%3D%2236%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%2236%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%2242%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E1%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%2278%22%20x2%3D%22460%22%20y2%3D%2278%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%2278%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%2284%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E2%3C/text%3E%3Cline%20x1%3D%2280%22%20y1%3D%22170%22%20x2%3D%22160%22%20y2%3D%22170%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22170%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%2280%22%20y%3D%22176%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E3%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%22170%22%20x2%3D%22440%22%20y2%3D%22170%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%22170%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%22176%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E4%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%22270%22%20x2%3D%22460%22%20y2%3D%22270%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%22270%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%22276%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E5%3C/text%3E%3C/svg%3E"
  },
  {
-  "q": "Що означає абревіатура HTML?",
+  "q": "Який семантичний тег HTML найкраще підходить для області 5?",
   "a": [
-   "HyperText Markup Language",
-   "HighText Machine Language",
-   "Hyperlink Text Management Language"
+   "<footer>",
+   "<header>",
+   "<aside>",
+   "<main>"
   ],
   "c": [
    0
-  ]
- },
- {
-  "q": "Що означає абревіатура CSS?",
-  "a": [
-   "Cascading Style Sheets",
-   "Computer Style System",
-   "Creative Site Structure"
   ],
-  "c": [
-   0
-  ]
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2212%22%20width%3D%22320%22%20height%3D%2248%22%20fill%3D%22%23dbeafe%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%2228%22%20width%3D%2270%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2264%22%20width%3D%22320%22%20height%3D%2228%22%20fill%3D%22%23e0e7ff%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22214%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22274%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22334%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2296%22%20width%3D%2290%22%20height%3D%22150%22%20fill%3D%22%23fef3c7%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22110%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22130%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22150%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22170%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22190%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22210%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22234%22%20y%3D%2296%22%20width%3D%22226%22%20height%3D%22150%22%20fill%3D%22%23f3f4f6%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22110%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22130%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22150%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22170%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22190%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22210%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22140%22%20y%3D%22250%22%20width%3D%22320%22%20height%3D%2240%22%20fill%3D%22%23d1fae5%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%22266%22%20width%3D%22120%22%20height%3D%228%22%20rx%3D%223%22%20fill%3D%22%236ee7b7%22/%3E%3Cline%20x1%3D%22520%22%20y1%3D%2236%22%20x2%3D%22460%22%20y2%3D%2236%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%2236%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%2242%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E1%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%2278%22%20x2%3D%22460%22%20y2%3D%2278%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%2278%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%2284%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E2%3C/text%3E%3Cline%20x1%3D%2280%22%20y1%3D%22170%22%20x2%3D%22160%22%20y2%3D%22170%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22170%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%2280%22%20y%3D%22176%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E3%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%22170%22%20x2%3D%22440%22%20y2%3D%22170%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%22170%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%22176%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E4%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%22270%22%20x2%3D%22460%22%20y2%3D%22270%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%22270%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%22276%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E5%3C/text%3E%3C/svg%3E"
  },
  {
-  "q": "Який тег HTML використовується для створення заголовка першого рівня?",
+  "q": "Який семантичний тег HTML підходить для основного вмісту в області 4?",
   "a": [
-   "<h1>",
-   "<head>",
-   "<title>",
+   "<main>",
+   "<nav>",
+   "<footer>",
    "<header>"
   ],
   "c": [
    0
-  ]
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2212%22%20width%3D%22320%22%20height%3D%2248%22%20fill%3D%22%23dbeafe%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%2228%22%20width%3D%2270%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2264%22%20width%3D%22320%22%20height%3D%2228%22%20fill%3D%22%23e0e7ff%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22214%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22274%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22334%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2296%22%20width%3D%2290%22%20height%3D%22150%22%20fill%3D%22%23fef3c7%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22110%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22130%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22150%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22170%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22190%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22210%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22234%22%20y%3D%2296%22%20width%3D%22226%22%20height%3D%22150%22%20fill%3D%22%23f3f4f6%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22110%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22130%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22150%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22170%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22190%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22210%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22140%22%20y%3D%22250%22%20width%3D%22320%22%20height%3D%2240%22%20fill%3D%22%23d1fae5%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%22266%22%20width%3D%22120%22%20height%3D%228%22%20rx%3D%223%22%20fill%3D%22%236ee7b7%22/%3E%3Cline%20x1%3D%22520%22%20y1%3D%2236%22%20x2%3D%22460%22%20y2%3D%2236%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%2236%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%2242%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E1%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%2278%22%20x2%3D%22460%22%20y2%3D%2278%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%2278%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%2284%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E2%3C/text%3E%3Cline%20x1%3D%2280%22%20y1%3D%22170%22%20x2%3D%22160%22%20y2%3D%22170%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22170%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%2280%22%20y%3D%22176%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E3%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%22170%22%20x2%3D%22440%22%20y2%3D%22170%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%22170%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%22176%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E4%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%22270%22%20x2%3D%22460%22%20y2%3D%22270%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%22270%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%22276%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E5%3C/text%3E%3C/svg%3E"
  },
  {
-  "q": "Який тег HTML використовується для вставлення зображення?",
+  "q": "Для області 3 (бічна панель із додатковою інформацією) доречно використати тег:",
   "a": [
-   "<img>",
-   "<image>",
-   "<picture>",
-   "<src>"
+   "<aside>",
+   "<header>",
+   "<main>",
+   "<title>"
+  ],
+  "c": [
+   0
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2212%22%20width%3D%22320%22%20height%3D%2248%22%20fill%3D%22%23dbeafe%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%2228%22%20width%3D%2270%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%2360a5fa%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2264%22%20width%3D%22320%22%20height%3D%2228%22%20fill%3D%22%23e0e7ff%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22214%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22274%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22334%22%20y%3D%2272%22%20width%3D%2246%22%20height%3D%2212%22%20rx%3D%223%22%20fill%3D%22%23818cf8%22/%3E%3Crect%20x%3D%22140%22%20y%3D%2296%22%20width%3D%2290%22%20height%3D%22150%22%20fill%3D%22%23fef3c7%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22110%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22130%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22150%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22170%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22190%22%20width%3D%2266%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22152%22%20y%3D%22210%22%20width%3D%2236%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22234%22%20y%3D%2296%22%20width%3D%22226%22%20height%3D%22150%22%20fill%3D%22%23f3f4f6%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22110%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22130%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22150%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22170%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22190%22%20width%3D%22202%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22246%22%20y%3D%22210%22%20width%3D%22172%22%20height%3D%227%22%20rx%3D%223%22%20fill%3D%22%239ca3af%22/%3E%3Crect%20x%3D%22140%22%20y%3D%22250%22%20width%3D%22320%22%20height%3D%2240%22%20fill%3D%22%23d1fae5%22%20stroke%3D%22%234b5563%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%22266%22%20width%3D%22120%22%20height%3D%228%22%20rx%3D%223%22%20fill%3D%22%236ee7b7%22/%3E%3Cline%20x1%3D%22520%22%20y1%3D%2236%22%20x2%3D%22460%22%20y2%3D%2236%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%2236%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%2242%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E1%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%2278%22%20x2%3D%22460%22%20y2%3D%2278%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%2278%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%2284%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E2%3C/text%3E%3Cline%20x1%3D%2280%22%20y1%3D%22170%22%20x2%3D%22160%22%20y2%3D%22170%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22170%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%2280%22%20y%3D%22176%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E3%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%22170%22%20x2%3D%22440%22%20y2%3D%22170%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%22170%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%22176%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E4%3C/text%3E%3Cline%20x1%3D%22520%22%20y1%3D%22270%22%20x2%3D%22460%22%20y2%3D%22270%22%20stroke%3D%22%23dc2626%22%20stroke-width%3D%221.6%22/%3E%3Ccircle%20cx%3D%22520%22%20cy%3D%22270%22%20r%3D%2213%22%20fill%3D%22%23dc2626%22/%3E%3Ctext%20x%3D%22520%22%20y%3D%22276%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-weight%3D%22bold%22%3E5%3C/text%3E%3C/svg%3E"
+ },
+ {
+  "q": "У якому з варіантів, А чи Б, текст читається краще і чому?",
+  "a": [
+   "А — вищий контраст між кольором тексту та фону",
+   "Б — світліший текст виглядає сучасніше й читається краще",
+   "Різниці немає — читабельність залежить лише від розміру шрифту",
+   "Б — бо сірий колір менше втомлює очі"
+  ],
+  "c": [
+   0
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Ctext%20x%3D%22160%22%20y%3D%2250%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%90%3C/text%3E%3Crect%20x%3D%2240%22%20y%3D%2270%22%20width%3D%22240%22%20height%3D%22150%22%20rx%3D%2210%22%20fill%3D%22%23fff%22%20stroke%3D%22%239ca3af%22%20stroke-width%3D%222%22/%3E%3Ctext%20x%3D%22160%22%20y%3D%22135%22%20text-anchor%3D%22middle%22%20font-size%3D%2228%22%20font-weight%3D%22bold%22%20fill%3D%22%23111827%22%3E%D0%9F%D1%80%D0%B8%D0%B2%D1%96%D1%82%2C%20%D1%81%D0%B2%D1%96%D1%82%D0%B5%21%3C/text%3E%3Ctext%20x%3D%22160%22%20y%3D%22175%22%20text-anchor%3D%22middle%22%20font-size%3D%2216%22%20fill%3D%22%23111827%22%3E%D0%A7%D0%B8%D1%82%D0%B0%D0%B1%D0%B5%D0%BB%D1%8C%D0%BD%D1%96%D1%81%D1%82%D1%8C%20%D1%82%D0%B5%D0%BA%D1%81%D1%82%D1%83%3C/text%3E%3Ctext%20x%3D%22440%22%20y%3D%2250%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%91%3C/text%3E%3Crect%20x%3D%22320%22%20y%3D%2270%22%20width%3D%22240%22%20height%3D%22150%22%20rx%3D%2210%22%20fill%3D%22%23fff%22%20stroke%3D%22%239ca3af%22%20stroke-width%3D%222%22/%3E%3Ctext%20x%3D%22440%22%20y%3D%22135%22%20text-anchor%3D%22middle%22%20font-size%3D%2228%22%20font-weight%3D%22bold%22%20fill%3D%22%23d1d5db%22%3E%D0%9F%D1%80%D0%B8%D0%B2%D1%96%D1%82%2C%20%D1%81%D0%B2%D1%96%D1%82%D0%B5%21%3C/text%3E%3Ctext%20x%3D%22440%22%20y%3D%22175%22%20text-anchor%3D%22middle%22%20font-size%3D%2216%22%20fill%3D%22%23d1d5db%22%3E%D0%A7%D0%B8%D1%82%D0%B0%D0%B1%D0%B5%D0%BB%D1%8C%D0%BD%D1%96%D1%81%D1%82%D1%8C%20%D1%82%D0%B5%D0%BA%D1%81%D1%82%D1%83%3C/text%3E%3C/svg%3E"
+ },
+ {
+  "q": "Яке правило доступності порушено у варіанті Б?",
+  "a": [
+   "Недостатній контраст тексту та фону",
+   "Відсутній alt-текст зображення",
+   "Не підтримується керування з клавіатури",
+   "Занадто великий розмір шрифту"
+  ],
+  "c": [
+   0
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Ctext%20x%3D%22160%22%20y%3D%2250%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%90%3C/text%3E%3Crect%20x%3D%2240%22%20y%3D%2270%22%20width%3D%22240%22%20height%3D%22150%22%20rx%3D%2210%22%20fill%3D%22%23fff%22%20stroke%3D%22%239ca3af%22%20stroke-width%3D%222%22/%3E%3Ctext%20x%3D%22160%22%20y%3D%22135%22%20text-anchor%3D%22middle%22%20font-size%3D%2228%22%20font-weight%3D%22bold%22%20fill%3D%22%23111827%22%3E%D0%9F%D1%80%D0%B8%D0%B2%D1%96%D1%82%2C%20%D1%81%D0%B2%D1%96%D1%82%D0%B5%21%3C/text%3E%3Ctext%20x%3D%22160%22%20y%3D%22175%22%20text-anchor%3D%22middle%22%20font-size%3D%2216%22%20fill%3D%22%23111827%22%3E%D0%A7%D0%B8%D1%82%D0%B0%D0%B1%D0%B5%D0%BB%D1%8C%D0%BD%D1%96%D1%81%D1%82%D1%8C%20%D1%82%D0%B5%D0%BA%D1%81%D1%82%D1%83%3C/text%3E%3Ctext%20x%3D%22440%22%20y%3D%2250%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%91%3C/text%3E%3Crect%20x%3D%22320%22%20y%3D%2270%22%20width%3D%22240%22%20height%3D%22150%22%20rx%3D%2210%22%20fill%3D%22%23fff%22%20stroke%3D%22%239ca3af%22%20stroke-width%3D%222%22/%3E%3Ctext%20x%3D%22440%22%20y%3D%22135%22%20text-anchor%3D%22middle%22%20font-size%3D%2228%22%20font-weight%3D%22bold%22%20fill%3D%22%23d1d5db%22%3E%D0%9F%D1%80%D0%B8%D0%B2%D1%96%D1%82%2C%20%D1%81%D0%B2%D1%96%D1%82%D0%B5%21%3C/text%3E%3Ctext%20x%3D%22440%22%20y%3D%22175%22%20text-anchor%3D%22middle%22%20font-size%3D%2216%22%20fill%3D%22%23d1d5db%22%3E%D0%A7%D0%B8%D1%82%D0%B0%D0%B1%D0%B5%D0%BB%D1%8C%D0%BD%D1%96%D1%81%D1%82%D1%8C%20%D1%82%D0%B5%D0%BA%D1%81%D1%82%D1%83%3C/text%3E%3C/svg%3E"
+ },
+ {
+  "q": "Що ілюструє схема з трьома екранами?",
+  "a": [
+   "Адаптивний дизайн: макет перебудовується залежно від ширини екрана",
+   "Створення трьох окремих сайтів для різних пристроїв",
+   "Налаштування роздільної здатності монітора",
+   "Підключення кількох моніторів до одного комп’ютера"
+  ],
+  "c": [
+   0
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%2220%22%20y%3D%2240%22%20width%3D%22300%22%20height%3D%22200%22%20rx%3D%2210%22%20fill%3D%22%23fff%22%20stroke%3D%22%23374151%22%20stroke-width%3D%223%22/%3E%3Crect%20x%3D%2230%22%20y%3D%2250%22%20width%3D%22280%22%20height%3D%2224%22%20rx%3D%223%22%20fill%3D%22%2393c5fd%22/%3E%3Crect%20x%3D%2230%22%20y%3D%2282%22%20width%3D%2290%22%20height%3D%22100%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22125%22%20y%3D%2282%22%20width%3D%2290%22%20height%3D%22100%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22220%22%20y%3D%2282%22%20width%3D%2290%22%20height%3D%22100%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%2230%22%20y%3D%22190%22%20width%3D%22280%22%20height%3D%2240%22%20rx%3D%223%22%20fill%3D%22%23a7f3d0%22/%3E%3Crect%20x%3D%22345%22%20y%3D%2270%22%20width%3D%22130%22%20height%3D%22170%22%20rx%3D%2210%22%20fill%3D%22%23fff%22%20stroke%3D%22%23374151%22%20stroke-width%3D%223%22/%3E%3Crect%20x%3D%22352%22%20y%3D%2277%22%20width%3D%22116%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%2393c5fd%22/%3E%3Crect%20x%3D%22352%22%20y%3D%22101%22%20width%3D%2256%22%20height%3D%2270%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22412%22%20y%3D%22101%22%20width%3D%2256%22%20height%3D%2270%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22352%22%20y%3D%22177%22%20width%3D%22116%22%20height%3D%2252%22%20rx%3D%223%22%20fill%3D%22%23a7f3d0%22/%3E%3Crect%20x%3D%22500%22%20y%3D%2290%22%20width%3D%2280%22%20height%3D%22150%22%20rx%3D%2212%22%20fill%3D%22%23fff%22%20stroke%3D%22%23374151%22%20stroke-width%3D%223%22/%3E%3Crect%20x%3D%22506%22%20y%3D%2298%22%20width%3D%2268%22%20height%3D%2216%22%20rx%3D%223%22%20fill%3D%22%2393c5fd%22/%3E%3Crect%20x%3D%22506%22%20y%3D%22120%22%20width%3D%2268%22%20height%3D%2234%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22506%22%20y%3D%22160%22%20width%3D%2268%22%20height%3D%2234%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22506%22%20y%3D%22200%22%20width%3D%2268%22%20height%3D%2230%22%20rx%3D%223%22%20fill%3D%22%23a7f3d0%22/%3E%3C/svg%3E"
+ },
+ {
+  "q": "Який механізм CSS дозволяє змінювати розташування блоків залежно від ширини екрана?",
+  "a": [
+   "Медіазапити (@media)",
+   "Псевдокласи (:hover)",
+   "Селектори за id",
+   "Властивість z-index"
+  ],
+  "c": [
+   0
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%2220%22%20y%3D%2240%22%20width%3D%22300%22%20height%3D%22200%22%20rx%3D%2210%22%20fill%3D%22%23fff%22%20stroke%3D%22%23374151%22%20stroke-width%3D%223%22/%3E%3Crect%20x%3D%2230%22%20y%3D%2250%22%20width%3D%22280%22%20height%3D%2224%22%20rx%3D%223%22%20fill%3D%22%2393c5fd%22/%3E%3Crect%20x%3D%2230%22%20y%3D%2282%22%20width%3D%2290%22%20height%3D%22100%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22125%22%20y%3D%2282%22%20width%3D%2290%22%20height%3D%22100%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22220%22%20y%3D%2282%22%20width%3D%2290%22%20height%3D%22100%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%2230%22%20y%3D%22190%22%20width%3D%22280%22%20height%3D%2240%22%20rx%3D%223%22%20fill%3D%22%23a7f3d0%22/%3E%3Crect%20x%3D%22345%22%20y%3D%2270%22%20width%3D%22130%22%20height%3D%22170%22%20rx%3D%2210%22%20fill%3D%22%23fff%22%20stroke%3D%22%23374151%22%20stroke-width%3D%223%22/%3E%3Crect%20x%3D%22352%22%20y%3D%2277%22%20width%3D%22116%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%2393c5fd%22/%3E%3Crect%20x%3D%22352%22%20y%3D%22101%22%20width%3D%2256%22%20height%3D%2270%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22412%22%20y%3D%22101%22%20width%3D%2256%22%20height%3D%2270%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22352%22%20y%3D%22177%22%20width%3D%22116%22%20height%3D%2252%22%20rx%3D%223%22%20fill%3D%22%23a7f3d0%22/%3E%3Crect%20x%3D%22500%22%20y%3D%2290%22%20width%3D%2280%22%20height%3D%22150%22%20rx%3D%2212%22%20fill%3D%22%23fff%22%20stroke%3D%22%23374151%22%20stroke-width%3D%223%22/%3E%3Crect%20x%3D%22506%22%20y%3D%2298%22%20width%3D%2268%22%20height%3D%2216%22%20rx%3D%223%22%20fill%3D%22%2393c5fd%22/%3E%3Crect%20x%3D%22506%22%20y%3D%22120%22%20width%3D%2268%22%20height%3D%2234%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22506%22%20y%3D%22160%22%20width%3D%2268%22%20height%3D%2234%22%20rx%3D%223%22%20fill%3D%22%23fcd34d%22/%3E%3Crect%20x%3D%22506%22%20y%3D%22200%22%20width%3D%2268%22%20height%3D%2230%22%20rx%3D%223%22%20fill%3D%22%23a7f3d0%22/%3E%3C/svg%3E"
+ },
+ {
+  "q": "Яке значення властивості justify-content застосовано в рядку В?",
+  "a": [
+   "space-between",
+   "center",
+   "flex-start",
+   "flex-end"
+  ],
+  "c": [
+   0
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Ctext%20x%3D%2240%22%20y%3D%2278%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%90%3C/text%3E%3Crect%20x%3D%2280%22%20y%3D%2240%22%20width%3D%22480%22%20height%3D%2260%22%20fill%3D%22%23f9fafb%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%226%204%22/%3E%3Crect%20x%3D%2290%22%20y%3D%2250%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22160%22%20y%3D%2250%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22230%22%20y%3D%2250%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Ctext%20x%3D%2240%22%20y%3D%22158%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%91%3C/text%3E%3Crect%20x%3D%2280%22%20y%3D%22120%22%20width%3D%22480%22%20height%3D%2260%22%20fill%3D%22%23f9fafb%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%226%204%22/%3E%3Crect%20x%3D%22220%22%20y%3D%22130%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22290%22%20y%3D%22130%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22360%22%20y%3D%22130%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Ctext%20x%3D%2240%22%20y%3D%22238%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%92%3C/text%3E%3Crect%20x%3D%2280%22%20y%3D%22200%22%20width%3D%22480%22%20height%3D%2260%22%20fill%3D%22%23f9fafb%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%226%204%22/%3E%3Crect%20x%3D%2290%22%20y%3D%22210%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22290%22%20y%3D%22210%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22490%22%20y%3D%22210%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3C/svg%3E"
+ },
+ {
+  "q": "Яке значення властивості justify-content дає розташування елементів у рядку Б?",
+  "a": [
+   "center",
+   "flex-start",
+   "space-between",
+   "flex-end"
+  ],
+  "c": [
+   0
+  ],
+  "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20600%20300%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2216%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23ffffff%22/%3E%3Ctext%20x%3D%2240%22%20y%3D%2278%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%90%3C/text%3E%3Crect%20x%3D%2280%22%20y%3D%2240%22%20width%3D%22480%22%20height%3D%2260%22%20fill%3D%22%23f9fafb%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%226%204%22/%3E%3Crect%20x%3D%2290%22%20y%3D%2250%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22160%22%20y%3D%2250%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22230%22%20y%3D%2250%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Ctext%20x%3D%2240%22%20y%3D%22158%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%91%3C/text%3E%3Crect%20x%3D%2280%22%20y%3D%22120%22%20width%3D%22480%22%20height%3D%2260%22%20fill%3D%22%23f9fafb%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%226%204%22/%3E%3Crect%20x%3D%22220%22%20y%3D%22130%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22290%22%20y%3D%22130%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22360%22%20y%3D%22130%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Ctext%20x%3D%2240%22%20y%3D%22238%22%20text-anchor%3D%22middle%22%20font-size%3D%2226%22%20font-weight%3D%22bold%22%3E%D0%92%3C/text%3E%3Crect%20x%3D%2280%22%20y%3D%22200%22%20width%3D%22480%22%20height%3D%2260%22%20fill%3D%22%23f9fafb%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%226%204%22/%3E%3Crect%20x%3D%2290%22%20y%3D%22210%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22290%22%20y%3D%22210%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3Crect%20x%3D%22490%22%20y%3D%22210%22%20width%3D%2260%22%20height%3D%2240%22%20rx%3D%225%22%20fill%3D%22%233b82f6%22/%3E%3C/svg%3E"
+ },
+ {
+  "q": "Чим веб-дизайн відрізняється від веб-програмування?",
+  "a": [
+   "Дизайн відповідає за вигляд і зручність сайту, програмування — за його логіку та функції",
+   "Це одне й те саме",
+   "Дизайн пишуть мовою SQL, а програмування — мовою HTML",
+   "Дизайн — це лише вибір кольорів, а програмування — вибір хостингу"
   ],
   "c": [
    0
   ]
  },
  {
-  "q": "Який атрибут тега img містить шлях до зображення?",
+  "q": "Що таке wireframe (каркас) сторінки?",
   "a": [
-   "src",
-   "href",
-   "link",
-   "path"
+   "Схематичний ескіз розташування елементів без деталей оформлення",
+   "Готовий сайт, опублікований в Інтернеті",
+   "Файл зі шрифтами сайту",
+   "Програма для стиснення зображень"
   ],
   "c": [
    0
   ]
  },
  {
-  "q": "Який атрибут img використовується для альтернативного тексту?",
+  "q": "Яка програма призначена для розробки макетів і прототипів інтерфейсів?",
   "a": [
-   "alt",
-   "title",
-   "text",
-   "description"
+   "Figma",
+   "WinRAR",
+   "Wireshark",
+   "PostgreSQL"
   ],
   "c": [
    0
   ]
  },
  {
-  "q": "Який тег HTML використовується для створення посилання?",
+  "q": "Потрібно зробити всі заголовки h2 на сторінці синіми. Де й як це правильно зробити?",
   "a": [
+   "У CSS: h2 { color: blue; }",
+   "У тегу <title>, указавши колір заголовків",
+   "В атрибуті alt кожного заголовка",
+   "У назві файлу сторінки"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Який селектор CSS вибирає елемент з атрибутом class=\"menu\"?",
+  "a": [
+   ".menu",
+   "#menu",
+   "menu",
+   "*menu"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Який селектор CSS вибирає елемент з атрибутом id=\"header\"?",
+  "a": [
+   "#header",
+   ".header",
+   "header()",
+   "@header"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що відобразить код <a href=\"about.html\">Про нас</a>?",
+  "a": [
+   "Посилання з текстом «Про нас», що веде на сторінку about.html",
+   "Зображення з назвою about.html",
+   "Заголовок «Про нас»",
+   "Кнопку, що видаляє файл about.html"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що не так у цьому коді: <img src=\"logo.png\">?",
+  "a": [
+   "Немає атрибута alt — гірша доступність і пошукова оптимізація",
+   "Неправильно записано тег зображення",
+   "Не вказано розширення файлу",
+   "Зображення не можна вставляти в HTML"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Для чого потрібен рядок <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">?",
+  "a": [
+   "Щоб сторінка коректно масштабувалась на мобільних пристроях",
+   "Щоб змінити кольори сайту",
+   "Щоб підключити базу даних",
+   "Щоб заборонити копіювання тексту"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що зробить цей код: @media (max-width: 600px) { .menu { display: none; } }",
+  "a": [
+   "На екранах шириною до 600 px приховає елемент із класом menu",
+   "Видалить меню з файлу HTML",
+   "Зробить меню шириною 600 px",
+   "Покаже меню лише на екранах від 600 px"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Який елемент за замовчуванням займає всю доступну ширину рядка (блоковий)?",
+  "a": [
+   "<div>",
+   "<span>",
    "<a>",
-   "<link>",
-   "<href>",
-   "<url>"
+   "<strong>"
   ],
   "c": [
    0
   ]
  },
  {
-  "q": "Який атрибут визначає адресу посилання?",
+  "q": "Щоб збільшити відстань між текстом кнопки та її рамкою, потрібно змінити:",
   "a": [
-   "href",
-   "src",
-   "link",
-   "url"
+   "padding",
+   "margin",
+   "border-radius",
+   "z-index"
   ],
   "c": [
    0
   ]
  },
  {
-  "q": "Для чого використовується CSS?",
+  "q": "Яке значення position залишає елемент на тому самому місці екрана під час прокручування сторінки?",
   "a": [
-   "Для оформлення вебсторінки",
-   "Для зміни кольорів елементів",
-   "Для керування шрифтами та відступами",
-   "Для створення бази даних"
+   "fixed",
+   "static",
+   "relative",
+   "inherit"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що задає правило a:hover { color: red; }?",
+  "a": [
+   "Колір посилання при наведенні курсора",
+   "Колір усіх відвіданих посилань",
+   "Колір посилання під час завантаження сторінки",
+   "Видалення посилання зі сторінки"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Який колір задає значення #0000ff?",
+  "a": [
+   "Синій",
+   "Червоний",
+   "Зелений",
+   "Жовтий"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Які кольори є комплементарними (протилежними на колірному колі)?",
+  "a": [
+   "Синій і помаранчевий",
+   "Червоний і помаранчевий",
+   "Жовтий і лимонний",
+   "Зелений і салатовий"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Які кольори належать до теплої гами?",
+  "a": [
+   "Червоний",
+   "Помаранчевий",
+   "Жовтий",
+   "Синій"
   ],
   "c": [
    0,
@@ -338,211 +558,155 @@ const Q = [
   ]
  },
  {
-  "q": "Які властивості CSS відповідають за колір тексту?",
+  "q": "Які принципи композиції використовують у вебдизайні?",
   "a": [
-   "color",
-   "text-color",
-   "font-color",
-   "foreground"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Яка CSS-властивість змінює колір фону?",
-  "a": [
-   "background-color",
-   "color-background",
-   "bg-color",
-   "background-style"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Яка CSS-властивість змінює розмір тексту?",
-  "a": [
-   "font-size",
-   "text-size",
-   "size-font",
-   "font-height"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Яка CSS-властивість визначає тип шрифту?",
-  "a": [
-   "font-family",
-   "font-type",
-   "text-family",
-   "typeface"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Що таке адаптивний вебдизайн?",
-  "a": [
-   "Створення сайту, який коректно відображається на різних пристроях",
-   "Створення сайту лише для смартфонів",
-   "Автоматичне створення сайту без дизайнера",
-   "Збільшення розміру всіх елементів"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Які пристрої потрібно враховувати під час адаптивного дизайну?",
-  "a": [
-   "Комп’ютери",
-   "Планшети",
-   "Смартфони",
-   "Тільки принтери"
-  ],
-  "c": [
-   0,
-   1,
-   2
-  ]
- },
- {
-  "q": "Що таке UX-дизайн?",
-  "a": [
-   "Проєктування зручності користування сайтом",
-   "Створення серверного обладнання",
-   "Написання програм для антивірусів"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Що таке UI-дизайн?",
-  "a": [
-   "Проєктування інтерфейсу користувача",
-   "Створення баз даних",
-   "Налаштування мережевого обладнання"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Що таке навігація на вебсайті?",
-  "a": [
-   "Система переходів між сторінками та розділами",
-   "Фонове зображення сайту",
-   "Назва домену",
-   "Розмір шрифту"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Який елемент зазвичай використовується для головного меню сайту?",
-  "a": [
-   "Навігаційне меню",
-   "Таблиця бази даних",
-   "Відеокарта",
-   "Архів"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Що таке favicon?",
-  "a": [
-   "Маленька іконка вебсайту у вкладці браузера",
-   "Основний логотип компанії",
-   "Фонове зображення сайту",
-   "Рекламний банер"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Який формат зображення підтримує прозорість?",
-  "a": [
-   "PNG",
-   "JPG",
-   "MP3",
-   "TXT"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Який формат зображення часто використовують для фотографій у вебі?",
-  "a": [
-   "JPG",
-   "MP3",
-   "TXT",
-   "DOCX"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Що таке макет вебсторінки?",
-  "a": [
-   "Схема розташування елементів на сторінці",
-   "Файл із паролями користувачів",
-   "Програма для редагування відео",
-   "Тип комп’ютерної мережі"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Що таке контраст у вебдизайні?",
-  "a": [
-   "Відмінність між елементами за кольором, розміром або формою",
-   "Кількість сторінок сайту",
-   "Швидкість роботи сервера",
-   "Розмір файлу HTML"
-  ],
-  "c": [
-   0
-  ]
- },
- {
-  "q": "Для чого використовують відступи в дизайні?",
-  "a": [
-   "Для покращення читабельності та структури",
-   "Для візуального розділення елементів",
-   "Для збільшення швидкості процесора"
-  ],
-  "c": [
-   0,
-   1
-  ]
- },
- {
-  "q": "Що є важливим для зручного вебдизайну?",
-  "a": [
-   "Чітка структура",
-   "Зрозуміла навігація",
-   "Читабельний текст",
-   "Адаптивність",
-   "Надмірна кількість декоративних елементів"
+   "Контраст",
+   "Вирівнювання",
+   "Повторення",
+   "Близькість (групування споріднених елементів)",
+   "Шифрування"
   ],
   "c": [
    0,
    1,
    2,
    3
+  ]
+ },
+ {
+  "q": "Який графічний формат векторний і не втрачає якості при масштабуванні?",
+  "a": [
+   "SVG",
+   "JPG",
+   "BMP",
+   "GIF"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що доцільно зробити із зображенням перед розміщенням на сайті, щоб сторінка швидше завантажувалась?",
+  "a": [
+   "Стиснути його й підібрати потрібний розмір",
+   "Збільшити роздільну здатність удвічі",
+   "Додати до нього рамку",
+   "Перетворити на документ Word"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Які дії пришвидшують завантаження сайту?",
+  "a": [
+   "Стиснення зображень",
+   "Мінімізація файлів CSS і JavaScript",
+   "Використання лише потрібних шрифтів",
+   "Автозапуск великих відео на кожній сторінці"
+  ],
+  "c": [
+   0,
+   1,
+   2
+  ]
+ },
+ {
+  "q": "Які дії підвищують доступність сайту?",
+  "a": [
+   "Додавання alt-тексту до зображень",
+   "Достатній контраст тексту та фону",
+   "Можливість керувати сайтом з клавіатури",
+   "Передавання важливої інформації лише кольором"
+  ],
+  "c": [
+   0,
+   1,
+   2
+  ]
+ },
+ {
+  "q": "Що таке хостинг?",
+  "a": [
+   "Послуга розміщення файлів сайту на сервері, доступному в Інтернеті",
+   "Унікальна адреса сайту",
+   "Програма для створення макетів",
+   "Мова розмітки сторінок"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що таке доменне ім’я?",
+  "a": [
+   "Унікальна текстова адреса сайту в Інтернеті",
+   "Файл зі стилями сайту",
+   "Комп’ютер, на якому зберігається сайт",
+   "Пароль адміністратора сайту"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що означає кросбраузерність сайту?",
+  "a": [
+   "Сайт однаково коректно відображається в різних браузерах",
+   "Сайт працює лише в одному браузері",
+   "Сайт можна відкрити без Інтернету",
+   "Сайт автоматично перекладається на інші мови"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Користувачі не можуть знайти кнопку «Купити» на сторінці. З якою сферою дизайну це насамперед пов’язано?",
+  "a": [
+   "UX — зручність і логіка розташування елементів",
+   "Налаштування сервера",
+   "Шифрування даних",
+   "Адміністрування баз даних"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Де на сторінці зазвичай розміщують найважливішу інформацію та заклик до дії?",
+  "a": [
+   "У верхній частині, видимій без прокручування",
+   "Лише в самому низу сторінки",
+   "У прихованому розділі",
+   "У коді сторінки, невидимому для користувача"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Що забезпечує поле <input type=\"email\"> у формі?",
+  "a": [
+   "Браузер перевіряє, що введено адресу електронної пошти у правильному форматі",
+   "Автоматично надсилає лист",
+   "Шифрує введений текст",
+   "Блокує введення цифр"
+  ],
+  "c": [
+   0
+  ]
+ },
+ {
+  "q": "Для чого у формі використовують тег <label>?",
+  "a": [
+   "Це підпис до поля, пов’язаний із ним: зручніше й доступніше для користувачів",
+   "Створює кнопку відправлення",
+   "Додає зображення на сторінку",
+   "Змінює стиль усієї сторінки"
+  ],
+  "c": [
+   0
   ]
  }
 ];
@@ -653,6 +817,15 @@ function calc(){
   });
   const n = state.questions.length, p = n ? ok / n : 0;
   return { correct: ok, wrong: n - ok, percent: p, grade: gradeOf(p) };
+}
+
+/* Відповіді для викладача: правильні — лише текст питання, хибні — що обрано й що було правильно */
+function buildAnswers(){
+  return state.questions.map((q, i) => {
+    const u = [...(state.answers[i] || [])].sort((a, b) => a - b), r = [...q.c].sort((a, b) => a - b);
+    if(u.length && JSON.stringify(u) === JSON.stringify(r)) return { q: q.q, ok: true };
+    return { q: q.q, ok: false, ch: u.map(k => q.a[k]), co: r.map(k => q.a[k]) };
+  });
 }
 
 /* ---------- екрани ---------- */
@@ -890,6 +1063,7 @@ async function finish(reason){
   finishing = true;
   state.active = false; state.finished = true; state.reason = reason;
   state.result = calc(); state.saved = false;
+  state.detail = buildAnswers();
   save(); stopTimer();
   $("secOverlay").style.display = "none";
   showResult();                                     // спершу показуємо результат — тест закрито
@@ -901,8 +1075,15 @@ async function sendResult(){
   const s = $("rSave"); s.textContent = "Результат зберігається..."; s.style.color = ""; $("retrySaveBtn").classList.add("hidden");
   try{
     const fb = { p_test_id: CONFIG.testId, p_attempt_id: Number(state.attemptId), p_score: state.result.correct };
-    try{ await rpc("finish_test_attempt", Object.assign({ p_max_score: state.questions.length }, fb)); }
-    catch(e){ if(/find the function|PGRST202/i.test(e.message)) await rpc("finish_test_attempt", fb); else throw e; }
+    const n = state.questions.length;
+    // від новішої версії функції на сервері до найстарішої — щоб бал зберігся в будь-якому разі
+    const tries = [Object.assign({ p_max_score: n, p_answers: state.detail || null }, fb), Object.assign({ p_max_score: n }, fb), fb];
+    let done = false, lastErr = null;
+    for(const body of tries){
+      try{ await rpc("finish_test_attempt", body); done = true; break; }
+      catch(e){ lastErr = e; if(!/find the function|PGRST202/i.test(e.message)) throw e; }
+    }
+    if(!done) throw lastErr;
     state.saved = true; save();
     s.textContent = "✅ Результат успішно збережено."; s.style.color = "#15803d";
   }catch(e){
