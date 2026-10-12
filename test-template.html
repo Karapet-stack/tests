@@ -301,6 +301,15 @@ function calc(){
   return { correct: ok, wrong: n - ok, percent: p, grade: gradeOf(p) };
 }
 
+/* Відповіді для викладача: правильні — лише текст питання, хибні — що обрано й що було правильно */
+function buildAnswers(){
+  return state.questions.map((q, i) => {
+    const u = [...(state.answers[i] || [])].sort((a, b) => a - b), r = [...q.c].sort((a, b) => a - b);
+    if(u.length && JSON.stringify(u) === JSON.stringify(r)) return { q: q.q, ok: true };
+    return { q: q.q, ok: false, ch: u.map(k => q.a[k]), co: r.map(k => q.a[k]) };
+  });
+}
+
 /* ---------- екрани ---------- */
 function show(id){ ["startScreen","testScreen","resultScreen"].forEach(s => $(s).classList.toggle("hidden", s !== id)); window.scrollTo(0,0); }
 function startErr(t){ $("startError").textContent = t; $("startError").classList.remove("hidden"); }
@@ -536,6 +545,7 @@ async function finish(reason){
   finishing = true;
   state.active = false; state.finished = true; state.reason = reason;
   state.result = calc(); state.saved = false;
+  state.detail = buildAnswers();
   save(); stopTimer();
   $("secOverlay").style.display = "none";
   showResult();                                     // спершу показуємо результат — тест закрито
@@ -547,8 +557,15 @@ async function sendResult(){
   const s = $("rSave"); s.textContent = "Результат зберігається..."; s.style.color = ""; $("retrySaveBtn").classList.add("hidden");
   try{
     const fb = { p_test_id: CONFIG.testId, p_attempt_id: Number(state.attemptId), p_score: state.result.correct };
-    try{ await rpc("finish_test_attempt", Object.assign({ p_max_score: state.questions.length }, fb)); }
-    catch(e){ if(/find the function|PGRST202/i.test(e.message)) await rpc("finish_test_attempt", fb); else throw e; }
+    const n = state.questions.length;
+    // від новішої версії функції на сервері до найстарішої — щоб бал зберігся в будь-якому разі
+    const tries = [Object.assign({ p_max_score: n, p_answers: state.detail || null }, fb), Object.assign({ p_max_score: n }, fb), fb];
+    let done = false, lastErr = null;
+    for(const body of tries){
+      try{ await rpc("finish_test_attempt", body); done = true; break; }
+      catch(e){ lastErr = e; if(!/find the function|PGRST202/i.test(e.message)) throw e; }
+    }
+    if(!done) throw lastErr;
     state.saved = true; save();
     s.textContent = "✅ Результат успішно збережено."; s.style.color = "#15803d";
   }catch(e){
