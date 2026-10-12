@@ -42,6 +42,7 @@ tr:hover td{background:#f8fafc}
 .danger-buttons{display:flex;gap:10px;flex-wrap:wrap}
 .danger-btn{background:#dc2626}.danger-btn:hover{background:#b91c1c}
 .danger-all{background:#991b1b}.danger-all:hover{background:#7f1d1d}
+.grp td{background:#eef2f7!important;font-weight:700;color:#334155}
 .mini{padding:5px 8px;font-size:12px;margin:0 2px 2px 0}
 th[data-k]{cursor:pointer;user-select:none;white-space:nowrap}th[data-k]:hover{background:#eef2f7}
 .opts{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -90,6 +91,7 @@ th[data-k]{cursor:pointer;user-select:none;white-space:nowrap}th[data-k]:hover{b
   </div>
 
   <div class="opts">
+    <label>Група: <select id="groupSelect" style="width:auto;padding:8px 10px"><option value="">Усі групи</option></select></label>
     <label><input type="checkbox" id="bestOnly"> Лише найкраща спроба кожного учня (з найвищим балом)</label>
   </div>
   <div class="opts">
@@ -250,6 +252,7 @@ async function loadResults(){
   try{
     const data = await supabaseRPC("get_all_test_attempts", { p_test_id: testId });
     allResults = Array.isArray(data) ? data : [];
+    fillGroups();
     renderResults();
   }catch(e){
     console.error(e);
@@ -298,11 +301,20 @@ function sortRows(rows){
 }
 
 /* пошук → найкраща спроба (за бажанням) → сортування */
+function fillGroups(){
+  const sel = $("groupSelect"), keep = sel.value;
+  const groups = [...new Set(allResults.map(r => String(r.student_group || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "uk"));
+  sel.innerHTML = '<option value="">Усі групи</option>' + groups.map(g => '<option value="' + escapeHtml(g) + '">' + escapeHtml(g) + "</option>").join("");
+  sel.value = groups.includes(keep) ? keep : "";
+}
+
 function getFilteredResults(){
   const q = $("searchInput").value.trim().toLowerCase();
   let rows = !q ? allResults : allResults.filter(r =>
     String(r.student_code || "").toLowerCase().includes(q) ||
     String(r.student_name || "").toLowerCase().includes(q));
+  const g = $("groupSelect").value;
+  if(g) rows = rows.filter(r => String(r.student_group || "").trim() === g);
   if($("bestOnly").checked) rows = bestOf(rows);
   return sortRows(rows);
 }
@@ -317,7 +329,16 @@ function renderResults(){
   let html = "<table><thead><tr><th>№</th>" + cols.map(([k, l]) =>
     '<th data-k="' + k + '" title="Сортувати">' + l + (sortKey === k ? (sortDir > 0 ? " ▲" : " ▼") : "") + "</th>").join("") + "<th></th></tr></thead><tbody>";
 
+  let lastGroup = null;
   rows.forEach((row, i) => {
+    if(sortKey === "student_group" && String(row.student_group || "") !== lastGroup){
+      lastGroup = String(row.student_group || "");
+      const gr = rows.filter(r => String(r.student_group || "") === lastGroup);
+      const stu = new Set(gr.map(r => r.student_code)).size;
+      const pc = gr.filter(r => r.status === "completed" && hasScore(r) && calcMax(r)).map(r => Number(r.score) / calcMax(r) * 100);
+      html += '<tr class="grp"><td colspan="11">' + escapeHtml(lastGroup || "Без групи") + " · учнів: " + stu +
+        (pc.length ? " · середній результат: " + (pc.reduce((x, y) => x + y, 0) / pc.length).toFixed(1) + "%" : "") + "</td></tr>";
+    }
     const status = String(row.status || "");
     let st = escapeHtml(status);
     if(status === "completed") st = '<span class="badge badge-completed">Завершено</span>';
@@ -433,6 +454,7 @@ $("searchInput").addEventListener("input", renderResults);
 $("refreshBtn").addEventListener("click", loadResults);
 $("exportBtn").addEventListener("click", exportCSV);
 $("bestOnly").addEventListener("change", renderResults);
+$("groupSelect").addEventListener("change", renderResults);
 $("tableContainer").addEventListener("click", e => {
   const th = e.target.closest("th[data-k]"); if(!th) return;
   const k = th.dataset.k;
