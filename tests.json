@@ -18,9 +18,9 @@
    "title": "Комп’ютерні мережі",
    "icon": "🌐",
    "desc": "Протоколи, адреси, обладнання, Wi-Fi, DNS",
-   "subtitle": "",
+   "subtitle": "Перевірка знань з теми комп’ютерних мереж",
    "questions": 50,
-   "minutes": 30,
+   "minutes": 45,
    "attempts": 3,
    "ready": true
   },
