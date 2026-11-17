@@ -98,9 +98,16 @@
    "ready": false
   },
   {
+   "id": "web_2026",
+   "file": "test-web_2026.html",
    "title": "Вебтехнології",
-   "icon": "",
-   "ready": false
+   "icon": "📝",
+   "desc": "Як працюють сайти: HTML, CSS, JavaScript, Інтернет і безпека.",
+   "subtitle": "",
+   "questions": 40,
+   "minutes": 30,
+   "attempts": 3,
+   "ready": true
   }
  ]
 }
