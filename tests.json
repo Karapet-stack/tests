@@ -43,8 +43,8 @@
    "icon": "🖥️",
    "desc": "Інформація, ОС і файли, Word, Excel, презентації, Інтернет, безпека",
    "subtitle": "Основи роботи з інформацією, програмами та Інтернетом",
-   "questions": 20,
-   "minutes": 20,
+   "questions": 30,
+   "minutes": 25,
    "attempts": 3,
    "ready": true
   },
